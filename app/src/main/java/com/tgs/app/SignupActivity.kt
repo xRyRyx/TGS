@@ -1,14 +1,11 @@
 package com.tgs.app
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.tgs.app.data.User
@@ -17,11 +14,11 @@ class SignupActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivitySignupBinding
     private lateinit var database : DatabaseReference
-    lateinit var email : EditText
-    lateinit var username : EditText
-    lateinit var password : EditText
-    lateinit var signupBtn : Button
-    lateinit var loginBtn : Button
+    private lateinit var email : EditText
+    private lateinit var username : EditText
+    private lateinit var password : EditText
+    private lateinit var signupBtn : Button
+    private lateinit var loginBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +38,8 @@ class SignupActivity : AppCompatActivity() {
 
             database = FirebaseDatabase.getInstance().getReference("Users")
 
-            val User = User(email,username,password)
-            database.child(username).setValue(User).addOnSuccessListener {
+            val user = User(email,username,password)
+            database.child(username).setValue(user).addOnSuccessListener {
                 binding.email.text.clear()
                 binding.username.text.clear()
                 binding.password.text.clear()
@@ -51,6 +48,11 @@ class SignupActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        loginBtn.setOnClickListener{
+            val Intent = Intent(this, LoginActivity ::class.java)
+            startActivity(Intent)
         }
     }
 }
