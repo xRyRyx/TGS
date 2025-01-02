@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "392743144099",
+    "project_id": "tgs-firebase-5234c",
+    "storage_bucket": "tgs-firebase-5234c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392743144099:android:a4fc9852dc09dd7bed0d16",
+        "android_client_info": {
+          "package_name": "com.tgs.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAId1l5SffTHh0R2tveg4D46qtX2fUsDfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
