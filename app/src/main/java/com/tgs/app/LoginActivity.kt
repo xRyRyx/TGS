@@ -1,5 +1,6 @@
 package com.tgs.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -16,6 +17,8 @@ class LoginActivity : AppCompatActivity() {
     lateinit var username : EditText
     lateinit var password : EditText
     lateinit var loginBtn : Button
+    lateinit var signupBtn : Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
         username = binding.username
         password = binding.password
         loginBtn = binding.loginBtn
+        signupBtn = binding.signupBtn
 
         loginBtn.setOnClickListener{
             val username = username.text.toString()
@@ -33,5 +37,11 @@ class LoginActivity : AppCompatActivity() {
             Log.i("Test Credentials", "Username : $username and Password : $password")
 
         }
+
+        signupBtn.setOnClickListener{
+            val Intent = Intent(this, SignupActivity ::class.java)
+            startActivity(Intent)
+        }
+
     }
 }

@@ -17,6 +17,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:hint="johndoe@gmail.com"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:background="@drawable/rounded_corner"
+            android:padding="18dp"
+            android:inputType="text"
+            android:id="@+id/email"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:hint="johndoe"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -41,18 +53,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Login"
+            android:text="Sign up"
             android:backgroundTint="@color/black"
             android:textColor="@color/white"
             android:padding="18dp"
             android:textSize="20sp"
-            android:id="@+id/login_btn"/>
+            android:id="@+id/signup_btn"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Login with Google"
+            android:text="Sign up with Google"
             android:backgroundTint="@color/black"
             android:textColor="@color/white"
             android:padding="18dp"
@@ -63,12 +75,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Sign up"
+            android:text="Login"
             android:backgroundTint="@color/black"
             android:textColor="@color/white"
             android:padding="18dp"
             android:textSize="20sp"
-            android:id="@+id/signup_btn"/>
+            android:id="@+id/login_btn"/>
 
     </LinearLayout>
 </RelativeLayout>
