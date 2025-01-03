@@ -5,19 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.tgs.app.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityLoginBinding
-    lateinit var username : EditText
-    lateinit var password : EditText
-    lateinit var loginBtn : Button
-    lateinit var signupBtn : Button
+    private lateinit var username : EditText
+    private lateinit var password : EditText
+    private lateinit var loginBtn : Button
+    private lateinit var signupBtn : Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +36,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         signupBtn.setOnClickListener{
-            val Intent = Intent(this, SignupActivity ::class.java)
-            startActivity(Intent)
+            val intent = Intent(this, SignupActivity :: class.java)
+            startActivity(intent)
         }
 
     }
