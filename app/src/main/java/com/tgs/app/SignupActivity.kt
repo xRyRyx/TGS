@@ -29,6 +29,9 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var houseNumber : EditText
     private lateinit var streetName : EditText
     private lateinit var submit : Button
+    private var provinceSelected: String = ""
+    private var municipalitySelected: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +66,7 @@ class SignupActivity : AppCompatActivity() {
             province.onItemClickListener = AdapterView.OnItemClickListener{
                 adapterView, view, i, l ->
 
-                val provinceSelected = adapterView.getItemAtPosition(i).toString()
+                provinceSelected = adapterView.getItemAtPosition(i).toString()
                 Toast.makeText(this@SignupActivity, "You selected $provinceSelected Province", Toast.LENGTH_SHORT).show()
 
                 val municipalities = Provinces.provinceItems[provinceSelected]?.keys?.toList() ?: emptyList()
@@ -78,12 +81,11 @@ class SignupActivity : AppCompatActivity() {
                 municipality.onItemClickListener = AdapterView.OnItemClickListener{
                         adapterView, view, i, l ->
 
-                    val municipalitySelected = adapterView.getItemAtPosition(i).toString()
+                    municipalitySelected = adapterView.getItemAtPosition(i).toString()
                     Toast.makeText(this@SignupActivity, "You selected $municipalitySelected Municipality", Toast.LENGTH_SHORT).show()
 
                     val barangays = Provinces.provinceItems[provinceSelected]?.get(municipalitySelected) ?: emptyList()
-                    val barangayAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, barangays
-                    )
+                    val barangayAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, barangays)
                     barangay.setAdapter(barangayAdapter)
                     barangay.visibility = View.VISIBLE
                 }
@@ -96,7 +98,7 @@ class SignupActivity : AppCompatActivity() {
 
                 database = FirebaseDatabase.getInstance().getReference("Users")
 
-                val user = User(email,username,password,houseNumber,streetName)
+                val user = User(email,username,password,houseNumber,streetName, provinceSelected, municipalitySelected)
                 database.child(username).setValue(user).addOnSuccessListener {
                     binding.email.text.clear()
                     binding.username.text.clear()
