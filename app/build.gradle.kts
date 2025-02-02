@@ -52,5 +52,10 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+
 
 }
