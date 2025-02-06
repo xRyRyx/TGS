@@ -5,7 +5,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,50 +38,30 @@
                 android:inputType="text"
                 android:id="@+id/streetName"/>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <AutoCompleteTextView
+                android:id="@+id/provinceSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:hint="Province">
+                android:hint = "Province"
+                android:dropDownHeight="200dp" />
 
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/provinceAuto"
-                    android:background="@drawable/rounded_corner"
-                    android:inputType="none"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <!-- AutoCompleteTextView for City/Municipality -->
+            <AutoCompleteTextView
+                android:id="@+id/citySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:hint="Municipality">
+                android:hint="City/Municipality"
+                android:dropDownHeight="200dp"
+                android:enabled="false" />
 
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/municipalityAuto"
-                    android:background="@drawable/rounded_corner"
-                    android:inputType="none"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <!-- AutoCompleteTextView for Barangay -->
+            <AutoCompleteTextView
+                android:id="@+id/barangaySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:hint="Barangay">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/barangayAuto"
-                    android:background="@drawable/rounded_corner"
-                    android:inputType="none"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:hint="Barangay"
+                android:dropDownHeight="200dp"
+                android:enabled="false" />
 
 
             <Button
