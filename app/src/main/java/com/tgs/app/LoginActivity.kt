@@ -14,7 +14,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var username : EditText
     private lateinit var password : EditText
     private lateinit var loginBtn : Button
-    private lateinit var signupBtn : Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
         username = binding.username
         password = binding.password
         loginBtn = binding.loginBtn
-        //signupBtn = binding.signupBtn
 
         loginBtn.setOnClickListener{
             val username = username.text.toString()
@@ -35,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
-        signupBtn.setOnClickListener{
+        binding.signupBTN.setOnClickListener{
             val intent = Intent(this, SignupActivity :: class.java)
             startActivity(intent)
         }
