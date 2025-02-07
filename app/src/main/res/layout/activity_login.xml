@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="30dp">
+    android:padding="30dp">
 
     <!-- Main Content -->
     <LinearLayout
@@ -52,7 +52,8 @@
             android:layout_height="wrap_content"
             app:cursorColor="@color/green"
             app:boxStrokeColor="@color/green"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
@@ -88,7 +89,8 @@
             android:layout_height="wrap_content"
             app:cursorColor="@color/green"
             app:boxStrokeColor="@color/green"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password"
@@ -188,8 +190,7 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
             android:textColor="@color/green"
-            android:textStyle="bold"
-            android:textSize="50sp"/>
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </RelativeLayout>

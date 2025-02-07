@@ -15,7 +15,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var password : EditText
     private lateinit var loginBtn : Button
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -37,6 +36,5 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, SignupActivity :: class.java)
             startActivity(intent)
         }
-
     }
 }
