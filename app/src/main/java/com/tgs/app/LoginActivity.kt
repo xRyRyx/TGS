@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
         username = binding.username
         password = binding.password
         loginBtn = binding.loginBtn
-        signupBtn = binding.signupBtn
+        //signupBtn = binding.signupBtn
 
         loginBtn.setOnClickListener{
             val username = username.text.toString()
