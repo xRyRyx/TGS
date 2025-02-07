@@ -77,6 +77,8 @@ class SignupActivity : AppCompatActivity() {
 
         submit.setOnClickListener {
             saveUserData()
+            val intent = Intent(this, MainActivity :: class.java)
+            startActivity(intent)
         }
     }
 
