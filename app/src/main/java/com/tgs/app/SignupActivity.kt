@@ -25,7 +25,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var barangayDropdown: AutoCompleteTextView
 
     private val client = OkHttpClient()
-    private val apiKey = "158871a329msh6a72c2a62279f6ep162d4ejsn26d1f38a192f"
+    private val apiKey = "33fc1dc5bbmsh4f2851549e35a34p1f8df8jsnbddebaac5913"
 
     private var provinceMap = mutableMapOf<String, String>()
     private var cityMap = mutableMapOf<String, String>()
@@ -222,8 +222,9 @@ class SignupActivity : AppCompatActivity() {
         val user = User(email, username, password, houseNumber, streetName, provinceSelected, municipalitySelected, barangaySelected)
         database.child(username).setValue(user).addOnSuccessListener {
             Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, MainActivity::class.java))
         }.addOnFailureListener {
-            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
         }
     }
 }

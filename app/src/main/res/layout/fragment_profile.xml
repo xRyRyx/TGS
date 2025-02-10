@@ -10,11 +10,44 @@
         android:layout_height="match_parent"
         android:background="@color/dark_gray">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:id="@+id/backBtn"
+            android:text="Back"/>
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:text="Profile" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:hint="name"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:padding="18dp"
+            android:id="@+id/name"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:hint="email"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:padding="18dp"
+            android:id="@+id/email"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:hint="address"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:padding="18dp"
+            android:id="@+id/province"/>
 
     </RelativeLayout>
 
