@@ -61,7 +61,7 @@
                     android:id="@+id/houseNumber"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:hint="Block 12 Lot 3 Phase 3"
+                    android:hint="House Number"
                     android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -86,7 +86,7 @@
                     android:id="@+id/streetName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:hint="Duhat Street"
+                    android:hint="Street Name"
                     android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -114,12 +114,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingStart="18dp"
-                    android:hint="Cavite"
-                    android:inputType="none"
+                    android:hint="Province"
+                    android:inputType="text"
                     android:dropDownHeight="200dp"
                     android:background="@null"
-                    android:textSize="16sp"
-                    android:enabled="false" />
+                    android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -145,8 +144,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingStart="18dp"
-                    android:hint="Bacoor"
-                    android:inputType="none"
+                    android:hint="City"
+                    android:inputType="text"
                     android:dropDownHeight="200dp"
                     android:background="@null"
                     android:textSize="16sp" />
@@ -175,20 +174,46 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingStart="18dp"
-                    android:hint="Mambog 3"
-                    android:inputType="none"
+                    android:hint="Barangay"
+                    android:inputType="text"
                     android:dropDownHeight="200dp"
                     android:background="@null"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/submit_btn"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Submit"
-                app:cornerRadius="5dp"
-                android:backgroundTint="@color/green"/>
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Back"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@android:color/transparent"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/gray"
+                    app:cornerRadius="5dp"
+                    android:layout_marginEnd="10dp"/>
+
+                <Button
+                    android:id="@+id/submit_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Submit"
+                    app:cornerRadius="5dp"
+                    android:backgroundTint="@color/green"/>
+            </LinearLayout>
+
         </LinearLayout>
+
     </ScrollView>
+
 </RelativeLayout>

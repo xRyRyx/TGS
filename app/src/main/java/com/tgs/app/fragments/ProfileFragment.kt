@@ -1,6 +1,7 @@
 package com.tgs.app.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,16 +30,13 @@ class ProfileFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        // Initialize Views
         nameTextView = view.findViewById(R.id.name)
         emailTextView = view.findViewById(R.id.email)
         addressTextView = view.findViewById(R.id.province)
         backButton = view.findViewById(R.id.backBtn)
 
-        // Load User Data from Realtime Database
         loadUserData()
 
-        // Handle Back Button Click
         backButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -48,18 +46,21 @@ class ProfileFragment : Fragment() {
 
     private fun loadUserData() {
         val user = auth.currentUser
+
         if (user != null) {
-            // Reference to the Users node
-            val userRef: DatabaseReference = database.getReference("Users").child(user.displayName ?: "")
+            val userRef: DatabaseReference = database.getReference("Users").child(user.uid)
 
             userRef.get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
-                    // Get user data
+
                     val name = snapshot.child("username").value.toString()
                     val email = snapshot.child("email").value.toString()
                     val province = snapshot.child("province").value.toString()
 
-                    // Update UI with user data
+
+                    Log.d("ProfileFragment", "Name: $name, Email: $email, Province: $province")
+
+
                     nameTextView.text = name.ifEmpty { "No Name" }
                     emailTextView.text = email.ifEmpty { "No Email" }
                     addressTextView.text = province.ifEmpty { "No Address" }

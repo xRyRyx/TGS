@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/quicksand_semibold"
-            android:text="Username" />
+            android:text="Email" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="johndoe"
+                android:hint="johndoe@gmail.com"
                 android:inputType="text"/>
 
         </com.google.android.material.textfield.TextInputLayout>

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.tgs.app.data.User
@@ -18,6 +19,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private lateinit var binding2: AccountCreationBinding
     private lateinit var database: DatabaseReference
+    private lateinit var auth: FirebaseAuth
     private lateinit var submit: Button
 
     private lateinit var provinceDropdown: AutoCompleteTextView
@@ -25,7 +27,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var barangayDropdown: AutoCompleteTextView
 
     private val client = OkHttpClient()
-    private val apiKey = "33fc1dc5bbmsh4f2851549e35a34p1f8df8jsnbddebaac5913"
+    private val apiKey = "5debc94c47msh7892ce1da3bc033p1e67b5jsnfe4fcbb5df32"
 
     private var provinceMap = mutableMapOf<String, String>()
     private var cityMap = mutableMapOf<String, String>()
@@ -42,6 +44,8 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = FirebaseAuth.getInstance()
 
         binding.signupBtn.setOnClickListener {
             email = binding.email.text.toString()
@@ -76,9 +80,19 @@ class SignupActivity : AppCompatActivity() {
         fetchProvinces()
 
         submit.setOnClickListener {
-            saveUserData()
-            val intent = Intent(this, MainActivity :: class.java)
-            startActivity(intent)
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = auth.currentUser
+                        if (user != null) {
+                            saveUserData(user.uid) // Pass the UID to save data
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
+                    } else {
+                        Toast.makeText(this, "Signup failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
     }
 
@@ -198,7 +212,7 @@ class SignupActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(dropdown.context, android.R.layout.simple_dropdown_item_1line, sortedItems)
         dropdown.setAdapter(adapter)
 
-        dropdown.post {
+        dropdown.setOnClickListener {
             dropdown.showDropDown()
         }
 
@@ -208,7 +222,7 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserData() {
+    private fun saveUserData(uid: String) { // Accept UID as a parameter
         val houseNumber = binding2.houseNumber.text.toString()
         val streetName = binding2.streetName.text.toString()
 
@@ -219,10 +233,10 @@ class SignupActivity : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance().getReference("Users")
 
-        val user = User(email, username, password, houseNumber, streetName, provinceSelected, municipalitySelected, barangaySelected)
-        database.child(username).setValue(user).addOnSuccessListener {
+        val user = User(email, username, houseNumber, streetName, provinceSelected, municipalitySelected, barangaySelected)
+
+        database.child(uid).setValue(user).addOnSuccessListener {
             Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, MainActivity::class.java))
         }.addOnFailureListener {
             Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
         }
