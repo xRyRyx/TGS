@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ProfileFragment">
 
     <RelativeLayout
@@ -10,53 +11,127 @@
         android:layout_height="match_parent"
         android:background="@color/dark_gray">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/green_rectangle"/>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:id="@+id/backBtn"
-                android:text="Back"/>
+            android:layout_height="110dp"
+            android:orientation="vertical"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/rounded_bg">
 
             <TextView
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint=""
-                android:textColor="@color/black"
+                android:fontFamily="@font/quicksand_bold"
+                android:hint="Name"
+                android:textColor="@color/green"
                 android:textSize="20sp"
-                android:id="@+id/name"/>
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"/>
 
             <TextView
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint=""
+                android:fontFamily="@font/quicksand_bold"
+                android:hint="Email"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:id="@+id/email"/>
+                android:textSize="12sp"
+                android:layout_marginStart="30dp"/>
 
             <TextView
+                android:id="@+id/province"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint=""
+                android:fontFamily="@font/quicksand_bold"
+                android:hint="Address"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:id="@+id/province"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:id="@+id/signoutBtn"
-                android:text="Sign out"/>
+                android:textSize="12sp"
+                android:layout_marginStart="30dp"/>
 
         </LinearLayout>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="225dp">
 
+            <TextView
+                android:id="@+id/account_btn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="4dp"
+                android:text="Account"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="@color/green"
+                android:background="@drawable/ripple_bg"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/home_icon"
+                android:drawableEnd="@drawable/home_icon"
+                android:drawablePadding="8dp"
+                android:textSize="16sp"
+                android:paddingHorizontal="16dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <TextView
+                android:id="@+id/address_btn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="4dp"
+                android:text="Address"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="@color/green"
+                android:background="@drawable/ripple_bg"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/home_icon"
+                android:drawableEnd="@drawable/home_icon"
+                android:drawablePadding="8dp"
+                android:textSize="16sp"
+                android:paddingHorizontal="16dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <TextView
+                android:id="@+id/contacts_btn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Contacts"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="@color/green"
+                android:background="@drawable/ripple_bg"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/home_icon"
+                android:drawableEnd="@drawable/home_icon"
+                android:drawablePadding="8dp"
+                android:textSize="16sp"
+                android:paddingHorizontal="16dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <TextView
+                android:id="@+id/logout_btn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:text="Log out"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="@color/red"
+                android:background="@drawable/ripple_bg"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/home_icon"
+                android:drawablePadding="8dp"
+                android:textSize="16sp"
+                android:paddingHorizontal="16dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>

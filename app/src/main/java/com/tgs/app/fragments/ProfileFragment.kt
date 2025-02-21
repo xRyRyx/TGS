@@ -19,7 +19,6 @@ class ProfileFragment : Fragment() {
     private lateinit var nameTextView: TextView
     private lateinit var emailTextView: TextView
     private lateinit var addressTextView: TextView
-    private lateinit var backButton: Button
 
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val database: FirebaseDatabase by lazy { FirebaseDatabase.getInstance() }
@@ -33,13 +32,8 @@ class ProfileFragment : Fragment() {
         nameTextView = view.findViewById(R.id.name)
         emailTextView = view.findViewById(R.id.email)
         addressTextView = view.findViewById(R.id.province)
-        backButton = view.findViewById(R.id.backBtn)
 
         loadUserData()
-
-        backButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
 
         return view
     }
