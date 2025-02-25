@@ -58,6 +58,7 @@
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:paddingVertical="10dp"
                 android:hint="johndoe@gmail.com"
                 android:inputType="text"/>
 
@@ -83,6 +84,7 @@
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:paddingVertical="10dp"
                 android:hint="••••••••"
                 android:inputType="textPassword"/>
 

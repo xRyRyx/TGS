@@ -2,6 +2,7 @@ package com.tgs.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -27,13 +28,12 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var barangayDropdown: AutoCompleteTextView
 
     private val client = OkHttpClient()
-    private val apiKey = "5debc94c47msh7892ce1da3bc033p1e67b5jsnfe4fcbb5df32"
+    private val apiKey = "fcb7f3beb3mshf0c1c3aa4a5cfe6p1bb806jsne0accbf9f4cb"
 
     private var provinceMap = mutableMapOf<String, String>()
     private var cityMap = mutableMapOf<String, String>()
 
     private var email = ""
-    private var username = ""
     private var password = ""
 
     private var provinceSelected = ""
@@ -49,10 +49,9 @@ class SignupActivity : AppCompatActivity() {
 
         binding.signupBtn.setOnClickListener {
             email = binding.email.text.toString()
-            username = binding.username.text.toString()
             password = binding.password.text.toString()
 
-            if (email.isBlank() || username.isBlank() || password.isBlank()) {
+            if (email.isBlank() || password.isBlank()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -78,6 +77,11 @@ class SignupActivity : AppCompatActivity() {
         barangayDropdown.isEnabled = false
 
         fetchProvinces()
+
+        binding2.backBtn.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         submit.setOnClickListener {
             auth.createUserWithEmailAndPassword(email, password)
@@ -222,23 +226,52 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserData(uid: String) { // Accept UID as a parameter
+    private fun saveUserData(uid: String) {
         val houseNumber = binding2.houseNumber.text.toString()
         val streetName = binding2.streetName.text.toString()
+        val fullName = binding2.fullName.text.toString()
+        val phoneNumber = binding2.phoneNumber.text.toString()
+        val email = FirebaseAuth.getInstance().currentUser?.email ?: ""
 
-        if (houseNumber.isBlank() || streetName.isBlank() || provinceSelected.isBlank() || municipalitySelected.isBlank() || barangaySelected.isBlank()) {
+        if (houseNumber.isBlank() || streetName.isBlank() || fullName.isBlank() || phoneNumber.isBlank() ||
+            provinceSelected.isBlank() || municipalitySelected.isBlank() || barangaySelected.isBlank()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
-        database = FirebaseDatabase.getInstance().getReference("Users")
+        val database = FirebaseDatabase.getInstance().getReference("users")
 
-        val user = User(email, username, houseNumber, streetName, provinceSelected, municipalitySelected, barangaySelected)
+        val accountInfo = mapOf(
+            "email" to email,
+            "fullname" to fullName
+        )
 
-        database.child(uid).setValue(user).addOnSuccessListener {
-            Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
-            Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
-        }
+        val address = mapOf(
+            "barangay" to barangaySelected,
+            "city" to municipalitySelected,
+            "housenumber" to houseNumber,
+            "province" to provinceSelected,
+            "street" to streetName
+        )
+
+        val userInfo = mapOf(
+            "address" to address,
+            "phonenumber" to phoneNumber
+        )
+
+        val user = mapOf(
+            "accountinfo" to accountInfo,
+            "userinfo" to userInfo
+        )
+
+        database.child(uid).setValue(user)
+            .addOnSuccessListener {
+                Log.d("FirebaseDebug", "User data successfully saved!")
+                Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FirebaseDebug", "Failed to save user data: ${exception.message}")
+                Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
+            }
     }
 }

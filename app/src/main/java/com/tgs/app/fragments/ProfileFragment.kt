@@ -1,25 +1,19 @@
 package com.tgs.app.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.tgs.app.R
+import com.tgs.app.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
-
-    private lateinit var nameTextView: TextView
-    private lateinit var emailTextView: TextView
-    private lateinit var addressTextView: TextView
-
+    private lateinit var binding: FragmentProfileBinding
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val database: FirebaseDatabase by lazy { FirebaseDatabase.getInstance() }
 
@@ -28,10 +22,6 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-
-        nameTextView = view.findViewById(R.id.name)
-        emailTextView = view.findViewById(R.id.email)
-        addressTextView = view.findViewById(R.id.province)
 
         loadUserData()
 
@@ -42,22 +32,23 @@ class ProfileFragment : Fragment() {
         val user = auth.currentUser
 
         if (user != null) {
-            val userRef: DatabaseReference = database.getReference("Users").child(user.uid)
+            val userRef: DatabaseReference = database.getReference("users").child(user.uid)
 
             userRef.get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
-
                     val name = snapshot.child("username").value.toString()
                     val email = snapshot.child("email").value.toString()
                     val province = snapshot.child("province").value.toString()
+                    val municipality = snapshot.child("municipality").value.toString()
+                    val barangay = snapshot.child("barangay").value.toString()
 
-
-                    Log.d("ProfileFragment", "Name: $name, Email: $email, Province: $province")
-
-
-                    nameTextView.text = name.ifEmpty { "No Name" }
-                    emailTextView.text = email.ifEmpty { "No Email" }
-                    addressTextView.text = province.ifEmpty { "No Address" }
+                    binding.name.text = name.ifEmpty { "No Name" }
+                    binding.email.text = email.ifEmpty { "No Email" }
+                    binding.addressBtn.text = if (province.isNotEmpty() && municipality.isNotEmpty() && barangay.isNotEmpty()) {
+                        "$province, $municipality, $barangay"
+                    } else {
+                        "No Address"
+                    }
                 } else {
                     Toast.makeText(requireContext(), "User data not found", Toast.LENGTH_SHORT).show()
                 }

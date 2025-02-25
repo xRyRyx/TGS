@@ -42,6 +42,58 @@
                 android:textColor="@color/gray" />
 
             <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/quicksand_semibold"
+                android:text="Full Name" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cursorColor="@color/green"
+                app:boxStrokeColor="@color/green"
+                android:layout_marginBottom="20dp"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingVertical="10dp"
+                    android:hint="Full Name"
+                    android:inputType="text"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/quicksand_semibold"
+                android:text="Phone Number" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cursorColor="@color/green"
+                app:boxStrokeColor="@color/green"
+                android:layout_marginBottom="20dp"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingVertical="10dp"
+                    android:hint="Phone Number"
+                    android:inputType="text"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,6 +113,7 @@
                     android:id="@+id/houseNumber"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:paddingVertical="10dp"
                     android:hint="House Number"
                     android:inputType="text"/>
 
@@ -86,6 +139,7 @@
                     android:id="@+id/streetName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:paddingVertical="10dp"
                     android:hint="Street Name"
                     android:inputType="text"/>
 
