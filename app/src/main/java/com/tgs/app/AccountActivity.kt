@@ -1,5 +1,6 @@
 package com.tgs.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,10 @@ class AccountActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         loadAccountInfo()
+
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
     }
 
     private fun loadAccountInfo() {
@@ -30,13 +35,17 @@ class AccountActivity : AppCompatActivity() {
 
             userRef.get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
-                    val fullName = snapshot.child("username").value.toString()
-                    val phoneNumber = snapshot.child("phoneNumber").value.toString() // Fixed key
-                    val email = snapshot.child("email").value.toString()
+                    val accountInfo = snapshot.child("accountinfo")
+                    val userInfo = snapshot.child("userinfo")
 
-                    binding.fullName.setText(fullName.ifEmpty { "No Name" })
-                    binding.phoneNumber.setText(phoneNumber.ifEmpty { "No Phone" })
-                    binding.email.setText(email.ifEmpty { "No Email" })
+                    val name = accountInfo.child("fullname").value?.toString() ?: ""
+                    val phoneNumber = userInfo.child("phonenumber").value?.toString() ?: ""
+                    val email = accountInfo.child("email").value?.toString() ?: ""
+
+                    binding.fullName.setText(name)
+                    binding.phoneNumber.setText(phoneNumber)
+                    binding.email.setText(email)
+
                 } else {
                     Toast.makeText(this, "User data not found", Toast.LENGTH_SHORT).show()
                 }

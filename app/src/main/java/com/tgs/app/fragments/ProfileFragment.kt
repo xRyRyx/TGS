@@ -1,5 +1,6 @@
 package com.tgs.app.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +10,10 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.tgs.app.AccountActivity
+import com.tgs.app.AddressActivity
 import com.tgs.app.R
+import com.tgs.app.SignupActivity
 import com.tgs.app.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -20,12 +24,22 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+    ): View {
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         loadUserData()
 
-        return view
+        binding.accountBtn.setOnClickListener {
+            val intent = Intent(requireContext(), AccountActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.addressBtn.setOnClickListener {
+            val intent = Intent(requireContext(), AddressActivity::class.java)
+            startActivity(intent)
+        }
+
+        return binding.root
     }
 
     private fun loadUserData() {
@@ -36,16 +50,18 @@ class ProfileFragment : Fragment() {
 
             userRef.get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
-                    val name = snapshot.child("username").value.toString()
-                    val email = snapshot.child("email").value.toString()
-                    val province = snapshot.child("province").value.toString()
-                    val municipality = snapshot.child("municipality").value.toString()
-                    val barangay = snapshot.child("barangay").value.toString()
+                    val accountInfo = snapshot.child("accountinfo")
+                    val userInfo = snapshot.child("userinfo").child("address")
 
-                    binding.name.text = name.ifEmpty { "No Name" }
-                    binding.email.text = email.ifEmpty { "No Email" }
-                    binding.addressBtn.text = if (province.isNotEmpty() && municipality.isNotEmpty() && barangay.isNotEmpty()) {
-                        "$province, $municipality, $barangay"
+                    val name = accountInfo.child("fullname").value?.toString() ?: ""
+                    val email = accountInfo.child("email").value?.toString() ?: ""
+                    val city = userInfo.child("city").value?.toString() ?: ""
+                    val province = userInfo.child("province").value?.toString() ?: ""
+
+                    binding.name.text = name
+                    binding.email.text = email
+                    binding.address.text = if (city.isNotEmpty() && province.isNotEmpty()) {
+                        "$city, $province"
                     } else {
                         "No Address"
                     }

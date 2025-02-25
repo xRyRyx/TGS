@@ -68,19 +68,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cursorColor="@color/green"
-            app:boxStrokeColor="@color/green"
+            app:boxStrokeColor="@color/gray"
+            app:boxBackgroundColor="@color/dark_gray"
             android:layout_marginBottom="20dp"
             app:hintEnabled="false">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fullName"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingVertical="10dp"
-                android:hint="John Doe"
-                android:inputType="text"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fullName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingVertical="10dp"
+            android:hint="John Doe"
+            android:inputType="none"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:textColor="@color/gray"
+            android:textColorHint="@color/gray" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/textView5"
@@ -94,7 +99,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cursorColor="@color/green"
-            app:boxStrokeColor="@color/green"
+            app:boxStrokeColor="@color/gray"
+            app:boxBackgroundColor="@color/dark_gray"
             android:layout_marginBottom="20dp"
             app:hintEnabled="false">
 
@@ -104,7 +110,11 @@
                 android:layout_height="50dp"
                 android:paddingVertical="10dp"
                 android:hint="Phone Number"
-                android:inputType="text"/>
+                android:inputType="none"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,7 +130,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cursorColor="@color/green"
-            app:boxStrokeColor="@color/green"
+            app:boxStrokeColor="@color/gray"
+            app:boxBackgroundColor="@color/dark_gray"
             android:layout_marginBottom="20dp"
             app:hintEnabled="false">
 
@@ -129,8 +140,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:paddingVertical="10dp"
-                android:hint="johndoe@gmail.com"
-                android:inputType="text"/>
+                android:hint="John Doe"
+                android:inputType="none"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

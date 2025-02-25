@@ -78,7 +78,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/green"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxBackgroundColor="@color/dark_gray"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -88,7 +89,11 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint="House Number"
-                        android:inputType="text"/>
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColor="@color/gray"
+                        android:textColorHint="@color/gray" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,7 +109,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/green"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxBackgroundColor="@color/dark_gray"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -114,7 +120,11 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint="Street Name"
-                        android:inputType="text"/>
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColor="@color/gray"
+                        android:textColorHint="@color/gray" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,7 +140,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/green"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxBackgroundColor="@color/dark_gray"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -140,7 +151,11 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint="Province"
-                        android:inputType="text"/>
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColor="@color/gray"
+                        android:textColorHint="@color/gray" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,7 +171,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/green"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxBackgroundColor="@color/dark_gray"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -166,7 +182,11 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint="City"
-                        android:inputType="text"/>
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColor="@color/gray"
+                        android:textColorHint="@color/gray" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -182,17 +202,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/green"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxBackgroundColor="@color/dark_gray"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/Barangay"
+                        android:id="@+id/barangay"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint="Barangay"
-                        android:inputType="text"/>
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColor="@color/gray"
+                        android:textColorHint="@color/gray" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
