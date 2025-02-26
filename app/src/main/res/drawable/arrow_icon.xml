@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportHeight="24"
+    android:viewportWidth="24">
+
+  <group
+      android:name="flipGroup"
+      android:pivotX="12"
+      android:pivotY="12"
+      android:scaleX="-1">
+
+    <path
+        android:fillColor="@color/gray"
+        android:strokeColor="@color/gray"
+        android:strokeWidth="1"
+        android:pathData="m4.296,12l8.492,-8.727a0.75,0.75 0,1 0,-1.075 -1.046l-9,9.25a0.75,0.75 0,0 0,0 1.046l9,9.25a0.75,0.75 0,1 0,1.075 -1.046z"/>
+  </group>
+
+</vector>

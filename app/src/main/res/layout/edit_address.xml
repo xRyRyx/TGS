@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddressActivity"
-    android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <View
         android:layout_width="match_parent"
@@ -30,18 +26,6 @@
                 android:layout_marginEnd="30dp"
                 android:layout_marginTop="30dp">
 
-                <ImageButton
-                    android:id="@+id/backBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/arrow_icon"
-                    android:scaleX="-1"
-                    app:tint="@color/white"
-                    android:layout_marginEnd="10sp"
-                    android:background="@android:color/transparent"/>
-
                 <TextView
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
@@ -54,14 +38,13 @@
                     android:textColor="@color/white"/>
 
                 <ImageButton
-                    android:id="@+id/editBtn"
+                    android:id="@+id/doneBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/pencil_icon"
-                    android:background="@android:color/transparent"
-                    app:tint="@color/white"/>
+                    app:srcCompat="@drawable/check_icon"
+                    android:background="@android:color/transparent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -84,8 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/gray"
-                    app:boxBackgroundColor="@color/dark_gray"
+                    app:boxStrokeColor="@color/green"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -95,11 +77,7 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint=""
-                        android:inputType="none"
-                        android:focusable="false"
-                        android:cursorVisible="false"
-                        android:textColor="@color/gray"
-                        android:textColorHint="@color/gray" />
+                        android:inputType="text"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,8 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/gray"
-                    app:boxBackgroundColor="@color/dark_gray"
+                    app:boxStrokeColor="@color/green"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -126,11 +103,7 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint=""
-                        android:inputType="none"
-                        android:focusable="false"
-                        android:cursorVisible="false"
-                        android:textColor="@color/gray"
-                        android:textColorHint="@color/gray" />
+                        android:inputType="text"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,8 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/gray"
-                    app:boxBackgroundColor="@color/dark_gray"
+                    app:boxStrokeColor="@color/green"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -157,11 +129,7 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint=""
-                        android:inputType="none"
-                        android:focusable="false"
-                        android:cursorVisible="false"
-                        android:textColor="@color/gray"
-                        android:textColorHint="@color/gray" />
+                        android:inputType="text"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,8 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/gray"
-                    app:boxBackgroundColor="@color/dark_gray"
+                    app:boxStrokeColor="@color/green"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -188,11 +155,7 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint=""
-                        android:inputType="none"
-                        android:focusable="false"
-                        android:cursorVisible="false"
-                        android:textColor="@color/gray"
-                        android:textColorHint="@color/gray" />
+                        android:inputType="text"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -208,8 +171,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cursorColor="@color/green"
-                    app:boxStrokeColor="@color/gray"
-                    app:boxBackgroundColor="@color/dark_gray"
+                    app:boxStrokeColor="@color/green"
                     android:layout_marginBottom="20dp"
                     app:hintEnabled="false">
 
@@ -219,11 +181,7 @@
                         android:layout_height="50dp"
                         android:paddingVertical="10dp"
                         android:hint=""
-                        android:inputType="none"
-                        android:focusable="false"
-                        android:cursorVisible="false"
-                        android:textColor="@color/gray"
-                        android:textColorHint="@color/gray" />
+                        android:inputType="text"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
