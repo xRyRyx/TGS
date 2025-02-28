@@ -1,4 +1,4 @@
-package com.tgs.app
+package com.tgs.app.contacts
 
 import android.content.Intent
 import android.os.Bundle

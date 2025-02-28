@@ -13,7 +13,7 @@
         android:theme="@style/Theme.TGS"
         tools:targetApi="31">
         <activity
-            android:name=".AddContactActivity"
+            android:name=".contacts.AddContactActivity"
             android:exported="false" />
         <activity
             android:name=".AccountActivity"
@@ -22,7 +22,7 @@
             android:name=".AddressActivity"
             android:exported="false" />
         <activity
-            android:name=".ContactsActivity"
+            android:name=".contacts.ContactsActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

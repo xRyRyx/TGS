@@ -1,4 +1,4 @@
-package com.tgs.app
+package com.tgs.app.contacts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

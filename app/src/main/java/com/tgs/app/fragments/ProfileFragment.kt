@@ -12,9 +12,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.tgs.app.AccountActivity
 import com.tgs.app.AddressActivity
-import com.tgs.app.ContactsActivity
-import com.tgs.app.R
-import com.tgs.app.SignupActivity
+import com.tgs.app.contacts.ContactsActivity
 import com.tgs.app.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
