@@ -25,7 +25,7 @@ class TempGaugeView(context: Context, attrs: AttributeSet) : View(context, attrs
     private val sweepAngle = 270f  // Sweep across top to lower-right
     private var temperature = 24.2f // Default temperature
     private var minTemp = 10f       // Adjust as needed
-    private var maxTemp = 40f       // Adjust as needed
+    private var maxTemp = 100f       // Adjust as needed
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -34,11 +34,24 @@ class TempGaugeView(context: Context, attrs: AttributeSet) : View(context, attrs
         val padding = 50f
         val rect = RectF(padding, padding, width - padding, height - padding)
 
-        // Gradient for rainbow arc
+        val colors = intArrayOf(
+            Color.parseColor("#87CEEB"), // Light Blue (Cold)
+            Color.parseColor("#5CB9A1"), // Teal
+            Color.parseColor("#FFF48C"), // Yellow (Neutral)
+            Color.parseColor("#F4A460"), // Sandy Brown
+            Color.parseColor("#F17381"), // Reddish-Pink (Hot)
+            Color.parseColor("#87CEEB")  // Repeat Blue for smooth blend
+        )
+
+        val colorPositions = floatArrayOf(
+            0.0f, 0.15f, 0.35f, 0.6f, 0.85f, 1.0f // Added last blue at 1.0
+        )
+
+        // Apply SweepGradient with the unique colors
         arcPaint.shader = SweepGradient(
             width / 2f, height / 2f,
-            intArrayOf(Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED),
-            floatArrayOf(0.0f, 0.3f, 0.7f, 1.0f) // Color stops
+            colors,
+            colorPositions
         )
 
         // Rotate canvas so gradient starts correctly
@@ -54,7 +67,7 @@ class TempGaugeView(context: Context, attrs: AttributeSet) : View(context, attrs
         val cy = (height / 2f) + radius * sin(Math.toRadians(angle.toDouble())).toFloat()
 
         // Draw indicator circle
-        canvas.drawCircle(cx, cy, 15f, indicatorPaint)
+        canvas.drawCircle(cx, cy, 35f, indicatorPaint)
     }
 
     // Function to update temperature dynamically

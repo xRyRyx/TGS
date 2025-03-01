@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.tgs.app.data.User
 import com.tgs.app.databinding.ActivitySignupBinding
 import com.tgs.app.databinding.AccountCreationBinding
 import kotlinx.coroutines.*

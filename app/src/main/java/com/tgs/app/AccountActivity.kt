@@ -7,10 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.tgs.app.contacts.AddContactActivity
 import com.tgs.app.databinding.ActivityAccountBinding
 import com.tgs.app.databinding.EditAccountBinding
-import com.tgs.app.fragments.ProfileFragment
 
 class AccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAccountBinding
