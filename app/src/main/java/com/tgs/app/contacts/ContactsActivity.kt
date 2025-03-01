@@ -32,6 +32,10 @@ class ContactsActivity : AppCompatActivity() {
             adapter = contactsAdapter
         }
 
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
+
         binding.addBtn.setOnClickListener {
             val intent = Intent(this, AddContactActivity::class.java)
             startActivity(intent)

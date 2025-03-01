@@ -1,5 +1,6 @@
 package com.tgs.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.tgs.app.contacts.AddContactActivity
 import com.tgs.app.databinding.ActivityAccountBinding
 import com.tgs.app.databinding.ActivityAddressBinding
 import com.tgs.app.databinding.EditAccountBinding
@@ -78,6 +80,11 @@ class AddressActivity : AppCompatActivity() {
             userRef.child("userinfo").child("address").child("barangay").get().addOnSuccessListener { snapshot ->
                 editBinding.barangay.setText(snapshot.value?.toString() ?: "")
             }
+        }
+
+        editBinding.backBtn.setOnClickListener {
+            val intent = Intent(this, AddressActivity::class.java)
+            startActivity(intent)
         }
 
         editBinding.doneBtn.setOnClickListener {

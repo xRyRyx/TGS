@@ -1,13 +1,16 @@
 package com.tgs.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.tgs.app.contacts.AddContactActivity
 import com.tgs.app.databinding.ActivityAccountBinding
 import com.tgs.app.databinding.EditAccountBinding
+import com.tgs.app.fragments.ProfileFragment
 
 class AccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAccountBinding
@@ -65,6 +68,11 @@ class AccountActivity : AppCompatActivity() {
             userRef.child("accountinfo").child("email").get().addOnSuccessListener { snapshot ->
                 editBinding.email.setText(snapshot.value?.toString() ?: "")
             }
+        }
+
+        editBinding.backBtn.setOnClickListener {
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
         }
 
         editBinding.doneBtn.setOnClickListener {

@@ -21,6 +21,10 @@ class AddContactActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
+
         binding.saveBtn.setOnClickListener {
             saveContact()
         }
