@@ -1,9 +1,9 @@
-package com.tgs.app.contacts
+package com.tgs.app.ui.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.tgs.app.data.Contact
+import com.tgs.app.data.model.Contact
 import com.tgs.app.databinding.ItemContactBinding
 
 class ContactsAdapter(private val contacts: List<Contact>) :

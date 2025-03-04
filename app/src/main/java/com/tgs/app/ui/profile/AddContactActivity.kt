@@ -1,4 +1,4 @@
-package com.tgs.app.contacts
+package com.tgs.app.ui.profile
 
 import android.os.Bundle
 import android.widget.Toast
@@ -6,20 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.tgs.app.data.repository.ContactRepository
 import com.tgs.app.databinding.ActivityAddContactBinding
 
 class AddContactActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddContactBinding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var database: DatabaseReference
+    private val contactRepository = ContactRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance().reference
 
         binding.backBtn.setOnClickListener {
             finish()
@@ -39,34 +36,16 @@ class AddContactActivity : AppCompatActivity() {
             return
         }
 
-        val userId = auth.currentUser?.uid
-        if (userId == null) {
-            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val contactId = database.child("users").child(userId)
-            .child("emergencycontacts").push().key
-
-        if (contactId == null) {
-            Toast.makeText(this, "Failed to generate contact ID!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val newContact = mapOf(
-            "name" to name,
-            "phonenumber" to phone
-        )
-
-        database.child("users").child(userId)
-            .child("emergencycontacts").child(contactId)
-            .setValue(newContact)
-            .addOnSuccessListener {
+        contactRepository.saveContact(
+            name,
+            phone,
+            onSuccess = {
                 Toast.makeText(this, "Contact Added!", Toast.LENGTH_SHORT).show()
                 finish()
+            },
+            onFailure = { error ->
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed to add contact", Toast.LENGTH_SHORT).show()
-            }
+        )
     }
 }

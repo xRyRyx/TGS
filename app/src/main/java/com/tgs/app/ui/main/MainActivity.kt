@@ -1,12 +1,13 @@
-package com.tgs.app
+package com.tgs.app.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.tgs.app.fragments.DevicesFragment
-import com.tgs.app.fragments.HomeFragment
-import com.tgs.app.fragments.ProfileFragment
+import com.tgs.app.R
+import com.tgs.app.ui.main.fragments.DevicesFragment
+import com.tgs.app.ui.main.fragments.HomeFragment
+import com.tgs.app.ui.main.fragments.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

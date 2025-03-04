@@ -1,4 +1,4 @@
-package com.tgs.app
+package com.tgs.app.ui.customviews
 
 import android.content.Context
 import android.graphics.*

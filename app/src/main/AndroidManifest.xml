@@ -13,31 +13,31 @@
         android:theme="@style/Theme.TGS"
         tools:targetApi="31">
         <activity
-            android:name=".contacts.AddContactActivity"
+            android:name=".ui.profile.AddContactActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountActivity"
+            android:name=".ui.profile.AccountActivity"
             android:exported="false" />
         <activity
-            android:name=".AddressActivity"
+            android:name=".ui.profile.AddressActivity"
             android:exported="false" />
         <activity
-            android:name=".contacts.ContactsActivity"
+            android:name=".ui.profile.ContactsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="false" />
         <activity
             android:name=".provinces.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".ui.auth.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

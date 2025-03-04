@@ -1,4 +1,4 @@
-package com.tgs.app.data
+package com.tgs.app.data.model
 
 data class Contact(
     val name: String? = null,

@@ -1,4 +1,4 @@
-package com.tgs.app.fragments
+package com.tgs.app.ui.main.fragments
 
 import android.os.Bundle
 import android.text.Editable

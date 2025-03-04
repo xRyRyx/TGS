@@ -1,4 +1,4 @@
-package com.tgs.app
+package com.tgs.app.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.tgs.app.ui.main.MainActivity
 import com.tgs.app.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {

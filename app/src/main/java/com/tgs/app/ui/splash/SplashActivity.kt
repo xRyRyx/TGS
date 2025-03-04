@@ -1,10 +1,12 @@
-package com.tgs.app
+package com.tgs.app.ui.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import com.tgs.app.R
+import com.tgs.app.ui.auth.LoginActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {

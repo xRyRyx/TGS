@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    tools:context=".ui.main.fragments.HomeFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_height="450dp"
             android:background="@drawable/white_rectangle"/>
 
-        <com.tgs.app.TempGaugeView
+        <com.tgs.app.ui.customviews.TempGaugeView
             android:id="@+id/tempGauge"
             android:layout_width="300dp"
             android:layout_height="300dp"

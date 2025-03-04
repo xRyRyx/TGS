@@ -1,4 +1,4 @@
-package com.tgs.app
+package com.tgs.app.ui.devices
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

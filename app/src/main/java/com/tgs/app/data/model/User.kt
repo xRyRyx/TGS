@@ -1,4 +1,4 @@
-package com.tgs.app.data
+package com.tgs.app.data.model
 
 data class User(
     val email : String? = null,
