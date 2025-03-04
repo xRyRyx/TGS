@@ -2,12 +2,15 @@ package com.tgs.app.ui.devices
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import com.tgs.app.R
 import com.tgs.app.databinding.ActivityAddDeviceBinding
+import com.tgs.app.databinding.ActivityLoginBinding
 import java.net.HttpURLConnection
 import java.net.URL
 
 class AddDeviceActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityAddDeviceBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,29 +18,27 @@ class AddDeviceActivity : AppCompatActivity() {
         binding = ActivityAddDeviceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.sendBtn.setOnClickListener{
+        binding.sendBtn.setOnClickListener {
             val ssid = binding.wifiName.text.toString()
-            val password = binding.password.text.toString()
-
-            sendWiFiCredentialsToArduino(ssid, password)
+            val pass = binding.password.text.toString()
+            sendWiFiCredentialsToESP8266(ssid, pass)
         }
     }
 
-    private fun sendWiFiCredentialsToArduino(ssid: String, password: String) {
+    private fun sendWiFiCredentialsToESP8266(ssid: String, password: String) {
         val url = URL("http://192.168.4.1/send_wifi_credentials?ssid=$ssid&password=$password")
 
-        // Make HTTP request to send credentials to Arduino
-        val thread = Thread {
+        // Run network request in a separate thread
+        Thread {
             try {
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
                 connection.connect()
-                connection.inputStream
+                connection.inputStream.close()
 
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
-        thread.start()
+        }.start()
     }
 }
