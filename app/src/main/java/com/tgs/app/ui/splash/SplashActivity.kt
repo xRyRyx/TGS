@@ -2,23 +2,31 @@ package com.tgs.app.ui.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.os.Handler
-import com.tgs.app.R
+import android.os.Looper
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.tgs.app.databinding.ActivitySplashBinding
 import com.tgs.app.ui.auth.LoginActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
-    private val splashScreenDelay = 2000L
+    private lateinit var binding: ActivitySplashBinding
+    private val splashScreenDelay = 1000L  // Increased delay for better visibility
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        Handler().postDelayed({
-            val intent = Intent(this, LoginActivity :: class.java)
-            startActivity(intent)
+        val animatedLogo2 = binding.logo.drawable as? AnimatedVectorDrawable
+        animatedLogo2?.start()
+
+        // Delay transition to LoginActivity
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }, splashScreenDelay)
     }
