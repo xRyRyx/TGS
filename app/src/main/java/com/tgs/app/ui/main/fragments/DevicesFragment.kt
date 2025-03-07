@@ -10,7 +10,7 @@ import com.tgs.app.databinding.FragmentDevicesBinding
 
 class DevicesFragment : Fragment() {
     private lateinit var binding: FragmentDevicesBinding
-    private lateinit var addDeviceLayout: View  // Manually reference the included layout
+    private lateinit var addDeviceLayout: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,11 +18,9 @@ class DevicesFragment : Fragment() {
     ): View {
         binding = FragmentDevicesBinding.inflate(inflater, container, false)
 
-        // Get reference to the included layout manually
         addDeviceLayout = binding.root.findViewById(R.id.addDeviceLayout)
-        addDeviceLayout.visibility = View.GONE  // Ensure it's hidden initially
+        addDeviceLayout.visibility = View.GONE
 
-        // Show Add Device Layout
         binding.addBtn.setOnClickListener {
             addDeviceLayout.visibility = View.VISIBLE
         }

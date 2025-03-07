@@ -13,7 +13,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.tgs.app.R
-import com.tgs.app.ui.main.MainActivity
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -25,7 +24,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (userId != null) {
             val dbRef = FirebaseDatabase.getInstance().getReference("users")
 
-            // 🔹 Update the FCM token inside accountinfo in Realtime Database
+            // update fcmtaken
             dbRef.child(userId).child("accountinfo").child("fcmtoken").setValue(token)
                 .addOnSuccessListener {
                     Log.d("FCM", "Token successfully updated in Realtime Database!")
@@ -57,7 +56,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val channelId = "default_channel"
         val notificationId = System.currentTimeMillis().toInt()
 
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, QuestionsActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

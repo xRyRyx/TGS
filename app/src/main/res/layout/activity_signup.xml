@@ -102,20 +102,6 @@
                 app:cornerRadius="5dp"
                 android:backgroundTint="@color/green"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/googlelgn_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Login with Google"
-                android:textColor="@color/black"
-                android:backgroundTint="@android:color/transparent"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/gray"
-                app:cornerRadius="5dp"
-                app:icon="@drawable/rounded_corner"
-                app:iconGravity="textStart"
-                app:iconTint="@color/black"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

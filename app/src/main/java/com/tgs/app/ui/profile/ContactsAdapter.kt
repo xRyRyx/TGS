@@ -19,7 +19,7 @@ class ContactsAdapter(
             binding.tvPhone.text = contact.phonenumber
 
             binding.editBtn.setOnClickListener {
-                onEditClick(contact) // Open edit activity
+                onEditClick(contact)
             }
 
             binding.deleteBtn.setOnClickListener {

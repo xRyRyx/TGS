@@ -61,7 +61,6 @@ class HomeFragment : Fragment() {
                 return@addOnCompleteListener
             }
 
-            // Get the token
             val token = task.result
             Log.d("FCM", "FCM Token: $token")
         }
@@ -76,7 +75,6 @@ class HomeFragment : Fragment() {
                 val token = task.result
                 Log.d("FCM", "FCM Token: $token")
 
-                // Save token inside accountinfo
                 val userRef = db.collection("users").document(userId)
                 userRef.update("accountinfo.fcmtoken", token)  // 👈 Update inside accountinfo
                     .addOnSuccessListener { Log.d("FCM", "Token updated in Firestore!") }
@@ -105,11 +103,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun askNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // android 13+
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
             ) {
-                // Permission already granted, do nothing
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                 // TODO: Show UI explaining why notifications are needed before requesting
             } else {

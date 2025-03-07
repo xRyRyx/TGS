@@ -89,7 +89,7 @@ class SignupActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val user = auth.currentUser
                         if (user != null) {
-                            saveUserData(user.uid) // Pass the UID to save data
+                            saveUserData(user.uid)
                             val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
                         }
@@ -172,7 +172,7 @@ class SignupActivity : AppCompatActivity() {
 
             client.newCall(request).execute().use { response ->
                 val body = response.body?.string() ?: ""
-                println("API Response: $body")  // 🔍 Debug API response
+                println("API Response: $body")
                 if (!response.isSuccessful) throw Exception("API call failed: ${response.code}")
                 body
             }
@@ -190,7 +190,7 @@ class SignupActivity : AppCompatActivity() {
             val locationsArray = when {
                 jsonObject.has("data") -> jsonObject.getJSONArray("data")
                 jsonObject.has("locations") -> jsonObject.getJSONArray("locations")
-                else -> return emptyMap() // Handle invalid JSON response
+                else -> return emptyMap()
             }
 
             val locations = mutableMapOf<String, String>()
@@ -241,19 +241,18 @@ class SignupActivity : AppCompatActivity() {
 
         val database = FirebaseDatabase.getInstance().getReference("users")
 
-        // 🔹 Get FCM token first before saving data
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("FirebaseDebug", "Fetching FCM token failed", task.exception)
                 return@addOnCompleteListener
             }
 
-            val fcmtoken = task.result // Retrieve FCM token
+            val fcmtoken = task.result
 
             val accountInfo = mapOf(
                 "email" to email,
                 "fullname" to fullName,
-                "fcmtoken" to fcmtoken // ✅ Add FCM token here
+                "fcmtoken" to fcmtoken
             )
 
             val address = mapOf(

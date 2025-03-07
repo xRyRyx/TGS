@@ -28,7 +28,7 @@ class ContactRepository {
         }
 
         val newContact = mapOf(
-            "id" to contactId,  // ✅ Store the ID
+            "id" to contactId,
             "name" to name,
             "phonenumber" to phone
         )
@@ -94,7 +94,6 @@ class ContactRepository {
 
         val contactsRef = database.child("users").child(userId).child("emergencycontacts")
 
-        // Find the contact by phone number (or use an ID if available)
         contactsRef.orderByChild("phonenumber").equalTo(contact.phonenumber)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

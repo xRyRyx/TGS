@@ -47,12 +47,11 @@ class LoginActivity : AppCompatActivity() {
             .addOnSuccessListener { authResult ->
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
 
-                // 🔹 Move to MainActivity IMMEDIATELY
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
 
-                // 🔹 Update FCM Token in the background (after moving to MainActivity)
+                // update fcmtoken
                 val uid = authResult.user?.uid
                 if (uid != null) {
                     updateFCMToken(uid)
@@ -82,7 +81,6 @@ class LoginActivity : AppCompatActivity() {
             val fcmtoken = task.result
             val database = FirebaseDatabase.getInstance().getReference("users")
 
-            // 🔹 Update only the fcmtoken inside accountinfo
             database.child(uid).child("accountinfo").child("fcmtoken").setValue(fcmtoken)
                 .addOnSuccessListener {
                     Log.d("FirebaseDebug", "FCM token updated successfully!")

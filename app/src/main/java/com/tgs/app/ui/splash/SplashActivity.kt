@@ -6,7 +6,6 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.tgs.app.databinding.ActivitySplashBinding
 import com.tgs.app.ui.auth.LoginActivity
@@ -14,7 +13,7 @@ import com.tgs.app.ui.auth.LoginActivity
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
-    private val splashScreenDelay = 1000L  // Increased delay for better visibility
+    private val splashScreenDelay = 1000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +22,7 @@ class SplashActivity : AppCompatActivity() {
 
         val animatedLogo2 = binding.logo.drawable as? AnimatedVectorDrawable
         animatedLogo2?.start()
-
-        // Delay transition to LoginActivity
+        
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

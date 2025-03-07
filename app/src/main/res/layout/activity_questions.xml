@@ -1,10 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".notif.QuestionsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:background="@android:color/white">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="30dp">
+
+        <TextView
+            android:id="@+id/questionProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Question 1"
+            android:textSize="16sp"
+            android:layout_marginEnd="20dp"/>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:layout_weight="0"
+            android:layout_gravity="center"
+            android:background="@color/dark_gray"/>
+
+    </LinearLayout>
+
+    <!-- Alert Message -->
+    <TextView
+        android:id="@+id/alertMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📢  Emergency! Alarm activated!"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="14sp"
+        android:paddingVertical="8dp" />
+
+    <!-- Question -->
+    <TextView
+        android:id="@+id/questionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Is there visible fire in the area?"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:paddingBottom="12dp" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="wrap_content"
+        android:layout_height="4dp"
+        android:layout_weight="0"
+        android:layout_gravity="center"
+        android:background="@color/dark_gray"
+        android:layout_marginBottom="30dp"/>
+
+    <!-- Answers -->
+    <RadioGroup
+        android:id="@+id/answerGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/option1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yes, there is visible fire."
+            android:fontFamily="@font/quicksand_semibold"
+            android:background="@drawable/custom_radio_selector"
+            android:button="@android:color/transparent"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="15dp"/>
+
+        <RadioButton
+            android:id="@+id/option2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No, but there is a burning smell."
+            android:fontFamily="@font/quicksand_semibold"
+            android:background="@drawable/custom_radio_selector"
+            android:button="@android:color/transparent"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="30dp"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        app:cornerRadius="5dp"
+        android:backgroundTint="@color/green"/>
+</LinearLayout>

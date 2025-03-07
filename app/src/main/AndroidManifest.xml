@@ -51,16 +51,13 @@
 
         <meta-data
             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" /> <!-- Default notification icon -->
+            android:resource="@array/preloaded_fonts" /> <!-- notification icon -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo" /> <!-- Default notification color -->
+            android:resource="@drawable/logo" /> <!-- notification color -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/green" /> <!-- Default notification channel (Android 8.0+) -->
-        <!-- <meta-data -->
-        <!-- android:name="com.google.firebase.messaging.default_notification_channel_id" -->
-        <!-- android:value="@string/default_notification_channel_id" /> -->
+            android:resource="@color/green" /> <!-- notification channel -->
         <service
             android:name=".notif.MyFirebaseMessagingService"
             android:exported="false">
