@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.tgs.app.databinding.ActivitySignupBinding
 import com.tgs.app.databinding.AccountCreationBinding
 import kotlinx.coroutines.*
@@ -240,37 +241,48 @@ class SignupActivity : AppCompatActivity() {
 
         val database = FirebaseDatabase.getInstance().getReference("users")
 
-        val accountInfo = mapOf(
-            "email" to email,
-            "fullname" to fullName
-        )
-
-        val address = mapOf(
-            "barangay" to barangaySelected,
-            "city" to municipalitySelected,
-            "housenumber" to houseNumber,
-            "province" to provinceSelected,
-            "street" to streetName
-        )
-
-        val userInfo = mapOf(
-            "address" to address,
-            "phonenumber" to phoneNumber
-        )
-
-        val user = mapOf(
-            "accountinfo" to accountInfo,
-            "userinfo" to userInfo
-        )
-
-        database.child(uid).setValue(user)
-            .addOnSuccessListener {
-                Log.d("FirebaseDebug", "User data successfully saved!")
-                Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
+        // 🔹 Get FCM token first before saving data
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FirebaseDebug", "Fetching FCM token failed", task.exception)
+                return@addOnCompleteListener
             }
-            .addOnFailureListener { exception ->
-                Log.e("FirebaseDebug", "Failed to save user data: ${exception.message}")
-                Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
-            }
+
+            val fcmtoken = task.result // Retrieve FCM token
+
+            val accountInfo = mapOf(
+                "email" to email,
+                "fullname" to fullName,
+                "fcmtoken" to fcmtoken // ✅ Add FCM token here
+            )
+
+            val address = mapOf(
+                "barangay" to barangaySelected,
+                "city" to municipalitySelected,
+                "housenumber" to houseNumber,
+                "province" to provinceSelected,
+                "street" to streetName
+            )
+
+            val userInfo = mapOf(
+                "address" to address,
+                "phonenumber" to phoneNumber
+            )
+
+            val user = mapOf(
+                "accountinfo" to accountInfo,
+                "userinfo" to userInfo
+            )
+
+            database.child(uid).setValue(user)
+                .addOnSuccessListener {
+                    Log.d("FirebaseDebug", "User data successfully saved with FCM token!")
+                    Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("FirebaseDebug", "Failed to save user data: ${exception.message}")
+                    Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 }

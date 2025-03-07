@@ -46,7 +46,7 @@ dependencies {
     // Firebase dependencies (No versions needed)
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-firestore:25.0.0")
     implementation("com.google.firebase:firebase-database-ktx")
 
     // AndroidX & UI components
@@ -61,6 +61,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation(libs.firebase.messaging.ktx)
 
     // Testing
     testImplementation(libs.junit)
