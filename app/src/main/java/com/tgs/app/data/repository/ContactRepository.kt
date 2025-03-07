@@ -28,6 +28,7 @@ class ContactRepository {
         }
 
         val newContact = mapOf(
+            "id" to contactId,  // ✅ Store the ID
             "name" to name,
             "phonenumber" to phone
         )
@@ -62,5 +63,55 @@ class ContactRepository {
                 onFailure("Failed to load contacts: ${error.message}")
             }
         })
+    }
+
+    fun updateContact(contactId: String, newName: String, newPhone: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            onFailure("User not logged in!")
+            return
+        }
+
+        val updatedContact = mapOf(
+            "id" to contactId,
+            "name" to newName,
+            "phonenumber" to newPhone
+        )
+
+        database.child("users").child(userId)
+            .child("emergencycontacts").child(contactId)
+            .updateChildren(updatedContact)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure(it.message ?: "Unknown error") }
+    }
+
+    fun deleteContact(contact: Contact, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            onFailure("User not logged in!")
+            return
+        }
+
+        val contactsRef = database.child("users").child(userId).child("emergencycontacts")
+
+        // Find the contact by phone number (or use an ID if available)
+        contactsRef.orderByChild("phonenumber").equalTo(contact.phonenumber)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (contactSnapshot in snapshot.children) {
+                            contactSnapshot.ref.removeValue()
+                                .addOnSuccessListener { onSuccess() }
+                                .addOnFailureListener { onFailure(it.message ?: "Failed to delete") }
+                        }
+                    } else {
+                        onFailure("Contact not found")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onFailure("Error deleting contact: ${error.message}")
+                }
+            })
     }
 }

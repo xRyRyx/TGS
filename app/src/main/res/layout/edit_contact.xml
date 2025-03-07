@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/editcontactLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@color/white">
 
     <View
@@ -39,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="Edit Account"
+            android:text="Edit Contact"
             android:textSize="20sp"
             android:fontFamily="@font/quicksand_bold"
             android:textColor="@color/white"/>
@@ -68,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/quicksand_semibold"
-            android:text="Full Name" />
+            android:text="Name" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -111,37 +109,6 @@
                 android:paddingVertical="10dp"
                 android:hint=""
                 android:inputType="text"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/quicksand_semibold"
-            android:text="Email" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cursorColor="@color/green"
-            app:boxStrokeColor="@color/gray"
-            app:boxBackgroundColor="@color/dark_gray"
-            android:layout_marginBottom="20dp"
-            app:hintEnabled="false">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingVertical="10dp"
-                android:hint=""
-                android:inputType="none"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
