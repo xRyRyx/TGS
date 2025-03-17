@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
 
         val animatedLogo2 = binding.logo.drawable as? AnimatedVectorDrawable
         animatedLogo2?.start()
-        
+
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

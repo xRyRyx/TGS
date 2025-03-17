@@ -21,14 +21,13 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var binding2: AccountCreationBinding
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
-    private lateinit var submit: Button
 
     private lateinit var provinceDropdown: AutoCompleteTextView
     private lateinit var cityDropdown: AutoCompleteTextView
     private lateinit var barangayDropdown: AutoCompleteTextView
 
     private val client = OkHttpClient()
-    private val apiKey = "fcb7f3beb3mshf0c1c3aa4a5cfe6p1bb806jsne0accbf9f4cb"
+    private val apiKey = "ac4d0de911msha6748bc8a1a39bap184972jsnbe68b249cb40"
 
     private var provinceMap = mutableMapOf<String, String>()
     private var cityMap = mutableMapOf<String, String>()
@@ -68,7 +67,6 @@ class SignupActivity : AppCompatActivity() {
         binding2 = AccountCreationBinding.inflate(layoutInflater)
         setContentView(binding2.root)
 
-        submit = binding2.submitBtn
         provinceDropdown = binding2.provinceSpinner
         cityDropdown = binding2.citySpinner
         barangayDropdown = binding2.barangaySpinner
@@ -83,14 +81,15 @@ class SignupActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        submit.setOnClickListener {
+        binding2.submitBtn.setOnClickListener {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
                         if (user != null) {
                             saveUserData(user.uid)
-                            val intent = Intent(this, LoginActivity::class.java)
+                            user.sendEmailVerification()
+                            val intent = Intent(this, VerifyEmailActivity::class.java)
                             startActivity(intent)
                         }
                     } else {

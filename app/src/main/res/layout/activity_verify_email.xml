@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="30dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:srcCompat="@drawable/unverified"
+        android:layout_marginBottom="50dp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Verify your email"
+        android:textSize="20sp"
+        android:fontFamily="@font/quicksand_bold"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tvVerifyMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/quicksand_medium"
+        android:text="Please check your email to verify your account."
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnResendEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Resend Verification Email"
+        android:fontFamily="@font/quicksand_bold"
+        app:cornerRadius="5dp"
+        android:backgroundTint="@color/red"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarVerify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
