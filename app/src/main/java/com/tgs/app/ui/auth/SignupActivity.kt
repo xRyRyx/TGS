@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tgs.app.databinding.ActivitySignupBinding
@@ -19,7 +18,6 @@ import org.json.JSONObject
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private lateinit var binding2: AccountCreationBinding
-    private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
 
     private lateinit var provinceDropdown: AutoCompleteTextView

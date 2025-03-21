@@ -2,11 +2,7 @@ package com.tgs.app.ui.devices
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import com.tgs.app.R
 import com.tgs.app.databinding.ActivityAddDeviceBinding
-import com.tgs.app.databinding.ActivityLoginBinding
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -28,7 +24,6 @@ class AddDeviceActivity : AppCompatActivity() {
     private fun sendWiFiCredentialsToESP8266(ssid: String, password: String) {
         val url = URL("http://192.168.4.1/send_wifi_credentials?ssid=$ssid&password=$password")
 
-        // Run network request in a separate thread
         Thread {
             try {
                 val connection = url.openConnection() as HttpURLConnection

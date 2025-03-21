@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="335dp"
+            android:layout_height="330dp"
             android:background="@drawable/bg_rounded_green"
             android:orientation="vertical"
             android:layout_marginBottom="30dp">
@@ -22,8 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                app:srcCompat="@drawable/home_icon" />
+                android:layout_marginBottom="8dp"
+                app:srcCompat="@drawable/temperature" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="current"
+                    android:text="Loading..."
                     android:textColor="@color/green"
                     android:textSize="14sp" />
 
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="highest"
+                    android:text="Loading..."
                     android:textColor="@color/green"
                     android:textSize="14sp" />
 
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="lowest"
+                    android:text="Loading..."
                     android:textColor="@color/green"
                     android:textSize="14sp" />
 
@@ -117,7 +117,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/home_icon"
+            app:srcCompat="@drawable/close"
             android:background="@android:color/transparent"/>
 
     </LinearLayout>

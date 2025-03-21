@@ -7,16 +7,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.io.File
 import java.io.FileWriter
-import java.io.BufferedReader
-import java.io.FileReader
 import java.text.SimpleDateFormat
 import java.util.*
 
 class LogsRepository (private val context: Context) {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    private val csvFile: File = File(context.filesDir, "temperature_logs.csv")
 
     fun loadTemperatureData(
         onSuccess: (String) -> Unit,
@@ -35,7 +31,6 @@ class LogsRepository (private val context: Context) {
                 val temperature = snapshot.value?.toString() ?: "No Data"
                 onSuccess(temperature)
 
-                // ✅ Save to CSV if it’s a new temperature
                 val lastTemp = getLastSavedTemperature()
                 if (lastTemp == null || lastTemp.toDoubleOrNull() != temperature.toDoubleOrNull()) {
                     saveTemperatureToCsv(temperature)
@@ -48,14 +43,126 @@ class LogsRepository (private val context: Context) {
         }
     }
 
+    fun loadHumidityData(
+        onSuccess: (String) -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        val user = auth.currentUser
+        if (user == null) {
+            onFailure("User not logged in")
+            return
+        }
+
+        val humidityRef = database.child("users").child(user.uid).child("logs").child("Humidity")
+
+        humidityRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val humidity = snapshot.value?.toString()?.toDoubleOrNull()
+                if (humidity != null) {
+                    val formattedHumidity = "${humidity.toInt()}%"
+                    onSuccess(formattedHumidity)
+                } else {
+                    onFailure("Invalid humidity data")
+                }
+            } else {
+                onFailure("Humidity data not found")
+            }
+        }.addOnFailureListener {
+            onFailure("Failed to load humidity: ${it.message}")
+        }
+    }
+
+    fun loadGasData(
+        onSuccess: (Boolean) -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        val user = auth.currentUser
+        if (user == null) {
+            onFailure("User not logged in")
+            return
+        }
+
+        val gasRef = database.child("users").child(user.uid).child("logs").child("GasValue")
+
+        gasRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val gasValue = snapshot.value?.toString()?.toIntOrNull()
+                if (gasValue != null) {
+                    onSuccess(gasValue >= 600)
+                } else {
+                    onFailure("Invalid gas data")
+                }
+            } else {
+                onFailure("Gas data not found")
+            }
+        }.addOnFailureListener {
+            onFailure("Failed to load gas data: ${it.message}")
+        }
+    }
+
+    fun loadFlameData(
+        onSuccess: (Int) -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        val user = auth.currentUser
+        if (user == null) {
+            onFailure("User not logged in")
+            return
+        }
+
+        val flameRef = database.child("users").child(user.uid).child("logs").child("FlameValue")
+
+        flameRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val flameValue = snapshot.value?.toString()?.toIntOrNull()
+                if (flameValue != null) {
+                    onSuccess(flameValue)
+                } else {
+                    onFailure("Invalid flame data")
+                }
+            } else {
+                onFailure("Flame data not found")
+            }
+        }.addOnFailureListener {
+            onFailure("Failed to load flame data: ${it.message}")
+        }
+    }
+
+    fun getLatestSensorData(
+        onResult: (Float, Boolean, Int) -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        loadTemperatureData(
+            onSuccess = { tempStr ->
+                val temp = tempStr.toFloatOrNull() ?: -1f
+                loadGasData(
+                    onSuccess = { gas ->
+                        loadFlameData(
+                            onSuccess = { flame ->
+                                onResult(temp, gas, flame)
+                            },
+                            onFailure = { flameError ->
+                                onFailure("Flame data error: $flameError")
+                            }
+                        )
+                    },
+                    onFailure = { gasError ->
+                        onFailure("Gas data error: $gasError")
+                    }
+                )
+            },
+            onFailure = { tempError ->
+                onFailure("Temperature data error: $tempError")
+            }
+        )
+    }
+
     fun saveTemperatureToCsv(temp: String) {
         try {
             val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-            // 🔹 Convert temperature to double and format with one decimal place
             val formattedTemp = String.format("%.1f°C", temp.toDoubleOrNull() ?: 0.0)
 
-            // 🔹 Convert time to Philippine time (GMT+8)
             val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
             sdf.timeZone = TimeZone.getTimeZone("Asia/Manila")
             val timestamp = sdf.format(Date())
@@ -65,14 +172,12 @@ class LogsRepository (private val context: Context) {
 
             val csvFile = File(logsFolder, "temperature_$todayDate.csv")
 
-            // ✅ Check the last recorded temperature before saving
             val lastTemp = getLastTemperature(csvFile)
             if (lastTemp == formattedTemp) {
                 Log.d("CSV_LOG", "Skipped saving: Temperature ($formattedTemp) is the same as last recorded.")
                 return
             }
 
-            // 🔹 Append new temperature to the file
             val writer = FileWriter(csvFile, true)
             writer.append("$formattedTemp,$timestamp,$todayDate\n")
             writer.flush()
@@ -85,7 +190,6 @@ class LogsRepository (private val context: Context) {
         }
     }
 
-    // Reads the last recorded temperature from the file
     private fun getLastTemperature(csvFile: File): String? {
         if (!csvFile.exists()) return null
 
@@ -116,13 +220,12 @@ class LogsRepository (private val context: Context) {
         csvFile.forEachLine { line ->
             val parts = line.split(",")
             if (parts.size == 3) {
-                // 🔹 Remove "°C" before converting to Double
                 val temp = parts[0].replace("°C", "").trim().toDoubleOrNull() ?: return@forEachLine
                 val timestamp = parts[1]
                 val date = parts[2]
 
                 if (date == todayDate) {
-                    currentTemp = temp // Latest temperature
+                    currentTemp = temp
 
                     if (temp > highestTemp) {
                         highestTemp = temp

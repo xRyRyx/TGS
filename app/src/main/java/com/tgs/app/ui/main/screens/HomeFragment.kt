@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.tgs.app.R
 import com.tgs.app.data.repository.LogsRepository
 import com.tgs.app.databinding.FragmentHomeBinding
 import com.tgs.app.notif.NotificationHelper
@@ -44,7 +45,7 @@ class HomeFragment : Fragment() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            // FCM SDK (and your app) can post notifications
+
         } else {
             // TODO: Inform user that notifications are disabled
         }
@@ -53,9 +54,7 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Register before the fragment is started
         popupLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            // Hide gray overlay when popup closes
             binding.grayOverlay.visibility = View.GONE
         }
     }
@@ -66,6 +65,7 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         observeSensorData()
+        loadHumidity()
         return binding.root
     }
 
@@ -80,6 +80,17 @@ class HomeFragment : Fragment() {
 
         observeSensorData()
         updateTemperatureDisplay()
+
+        logsRepository?.getLatestSensorData(
+            onResult = { temp, gasDetected, flame ->
+                val gasPPM = if (gasDetected) 600 else 0
+
+                NotificationHelper.sendHazardNotification(requireContext(), temp, gasPPM, flame)
+            },
+            onFailure = { error ->
+                Log.e("SensorData", "Failed to fetch sensor data: $error")
+            }
+        )
 
         val db = FirebaseFirestore.getInstance()
         val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -105,7 +116,7 @@ class HomeFragment : Fragment() {
                 Log.d("FCM", "FCM Token: $token")
 
                 val userRef = db.collection("users").document(userId)
-                userRef.update("accountinfo.fcmtoken", token)  // 👈 Update inside accountinfo
+                userRef.update("accountinfo.fcmtoken", token)
                     .addOnSuccessListener { Log.d("FCM", "Token updated in Firestore!") }
                     .addOnFailureListener { e -> Log.w("FCM", "Error saving token", e) }
             }
@@ -113,20 +124,18 @@ class HomeFragment : Fragment() {
 
         refreshRunnable = object : Runnable {
             override fun run() {
-                observeSensorData() // Fetch new data
-                updateTemperatureDisplay() // Refresh UI
-                handler.postDelayed(this, 5000) // Repeat every 5 seconds
+                observeSensorData()
+                handler.postDelayed(this, 1000)
             }
         }
-        handler.post(refreshRunnable) // Start the loop
+        handler.post(refreshRunnable)
 
-        // Listener to update gauge when text changes (manual edit simulation)
         binding.temp.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val temp = s.toString().toFloatOrNull()
                 if (temp != null) {
                     currentTempCelsius = if (isCelsius) temp else fahrenheitToCelsius(temp)
-                    binding.tempGauge.setTemperature(currentTempCelsius) // Always in Celsius
+                    binding.tempGauge.setTemperature(currentTempCelsius)
                 }
             }
 
@@ -135,15 +144,12 @@ class HomeFragment : Fragment() {
         })
 
         binding.tempCV.setOnClickListener {
-            // Show gray overlay
             binding.grayOverlay.visibility = View.VISIBLE
 
-            // Launch popup activity
             val intent = Intent(requireContext(), TempPopupActivity::class.java)
             popupLauncher.launch(intent)
         }
 
-        // Celsius Button - Switch to Celsius
         binding.celsius.setOnClickListener {
             if (!isCelsius) {
                 isCelsius = true
@@ -152,7 +158,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // Fahrenheit Button - Convert and switch to Fahrenheit
         binding.fahrenheit.setOnClickListener {
             if (isCelsius) {
                 isCelsius = false
@@ -186,9 +191,13 @@ class HomeFragment : Fragment() {
 
         binding.tempGauge.setTemperature(currentTempCelsius)
 
-        // Force the UI to redraw
         binding.temp.invalidate()
         binding.tempGauge.invalidate()
+    }
+
+    private fun updateHumidityDisplay(humidity: String) {
+        binding.humidity.text = humidity
+        binding.humidity.invalidate()
     }
 
     private fun celsiusToFahrenheit(celsius: Float): Float {
@@ -219,7 +228,6 @@ class HomeFragment : Fragment() {
                 return@addOnCompleteListener
             }
 
-            // Get the token
             val token = task.result
             Log.d("FCM", "FCM Token: $token")
 
@@ -239,7 +247,7 @@ class HomeFragment : Fragment() {
                 logsRepository?.loadTemperatureData(
                     onSuccess = { temperature ->
                         val temp = temperature.toFloatOrNull() ?: return@loadTemperatureData
-                        if (currentTempCelsius != temp) { // Update only if there's a change
+                        if (currentTempCelsius != temp) {
                             currentTempCelsius = temp
                             Log.d("Firebase", "Updated temp: $temp")
 
@@ -250,6 +258,33 @@ class HomeFragment : Fragment() {
                     },
                     onFailure = { Log.e("FirebaseError", "Failed to load temperature") }
                 )
+
+                logsRepository?.loadHumidityData(
+                    onSuccess = { humidity ->
+                        binding.humidity.post {
+                            updateHumidityDisplay(humidity)
+                        }
+                    },
+                    onFailure = { Log.e("FirebaseError", "Failed to load humidity") }
+                )
+
+                logsRepository?.loadGasData(
+                    onSuccess = { isGasDetected ->
+                        binding.gasSmokeDetected.post {
+                            updateGasDisplay(isGasDetected)
+                        }
+                    },
+                    onFailure = { Log.e("FirebaseError", "Failed to load gas data") }
+                )
+
+                logsRepository?.loadFlameData(
+                    onSuccess = { flameValue ->
+                        binding.flameDetected.post {
+                            updateFlameDisplay(flameValue)
+                        }
+                    },
+                    onFailure = { Log.e("FirebaseError", "Failed to load flame data") }
+                )
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -258,7 +293,38 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun sendHazardNotification(title: String, message: String) {
-        NotificationHelper.sendHazardNotification(requireContext(), title, message)
+    private fun loadHumidity() {
+        logsRepository?.loadHumidityData(
+            onSuccess = { humidity ->
+                binding.humidity.text = humidity
+            },
+            onFailure = { error ->
+                binding.humidity.text = error
+            }
+        )
+    }
+
+    private fun updateGasDisplay(isDetected: Boolean) {
+        if (isDetected) {
+            binding.gasSmokeDetected.text = "Gas Detected"
+            binding.gasSmokeDetected.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+            binding.gasSmokeDetected.setCompoundDrawablesWithIntrinsicBounds(R.drawable.danger_icon, 0, 0, 0)
+        } else {
+            binding.gasSmokeDetected.text = "No Gas Detected"
+            binding.gasSmokeDetected.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            binding.gasSmokeDetected.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check_shield_icon, 0, 0, 0)
+        }
+    }
+
+    private fun updateFlameDisplay(flameValue: Int) {
+        if (flameValue < 60) {
+            binding.flameDetected.text = "Flame Detected"
+            binding.flameDetected.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+            binding.flameDetected.setCompoundDrawablesWithIntrinsicBounds(R.drawable.danger_icon, 0, 0, 0)
+        } else {
+            binding.flameDetected.text = "No Flame Detected"
+            binding.flameDetected.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+            binding.flameDetected.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check_shield_icon, 0, 0, 0)
+        }
     }
 }

@@ -14,7 +14,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="510dp"
             android:background="@drawable/white_rectangle"/>
 
         <com.tgs.app.ui.customviews.TempGaugeView
@@ -103,7 +103,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="13dp">
 
                 <TextView
                     android:id="@+id/celsius"
@@ -127,6 +128,24 @@
                     android:fontFamily="@font/quicksand_bold"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/humidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="0%"
+                android:textSize="30sp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/textView0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Humidity"
+                android:textColor="@color/gray"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
 
@@ -134,20 +153,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="460dp">
+            android:layout_marginTop="520dp">
 
             <TextView
-                android:id="@+id/gas_detected"
+                android:id="@+id/gas_smoke_detected"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="3dp"
                 android:text="No gas or smoke detected"
                 android:fontFamily="@font/quicksand_bold"
                 android:textColor="@color/black"
-                android:background="@drawable/ripple_bg"
+                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/check_shield_icon"
-                android:drawableEnd="@drawable/arrow_icon"
                 android:drawablePadding="20dp"
                 android:textSize="16sp"
                 android:paddingHorizontal="30dp"
@@ -162,10 +180,9 @@
                 android:text="No flame detected"
                 android:fontFamily="@font/quicksand_bold"
                 android:textColor="@color/black"
-                android:background="@drawable/ripple_bg"
+                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/check_shield_icon"
-                android:drawableEnd="@drawable/arrow_icon"
                 android:drawablePadding="20dp"
                 android:textSize="16sp"
                 android:paddingHorizontal="30dp"

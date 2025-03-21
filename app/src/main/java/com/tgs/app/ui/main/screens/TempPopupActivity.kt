@@ -24,14 +24,14 @@ class TempPopupActivity : AppCompatActivity() {
         displayTemperatureStats()
 
         binding.closeBtn.setOnClickListener {
-            setResult(Activity.RESULT_OK) // Notify HomeFragment that popup is closed
-            finish() // Close the popup
+            setResult(Activity.RESULT_OK)
+            finish()
         }
     }
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(0, R.anim.fade_in_fast) // Apply fade-out
+        overridePendingTransition(0, R.anim.fade_in_fast)
     }
 
     private fun displayTemperatureStats() {
@@ -39,10 +39,8 @@ class TempPopupActivity : AppCompatActivity() {
             onSuccess = { temperature ->
                 logsRepository.saveTemperatureToCsv(temperature)
 
-                // Get the current, highest, and lowest temperature with timestamps
                 val (current, highest, lowest) = logsRepository.getTemperatureStats()
 
-                // Update the TextViews
                 binding.currentTemp.text = formatTemperature(current)
                 binding.highestTemp.text = formatTemperatureWithTime(highest)
                 binding.lowestTemp.text = formatTemperatureWithTime(lowest)
@@ -68,7 +66,7 @@ class TempPopupActivity : AppCompatActivity() {
             val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
             val date = sdf.parse(timestamp) ?: return timestamp
 
-            val outputFormat = SimpleDateFormat("h:mm a", Locale.getDefault()) // Convert to 12-hour format
+            val outputFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
             outputFormat.format(date)
         } catch (e: Exception) {
             timestamp
