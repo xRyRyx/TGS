@@ -1,9 +1,12 @@
-package com.tgs.app.ui.main.fragments
+package com.tgs.app.ui.main.screens
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -11,6 +14,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -20,12 +25,20 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.tgs.app.data.repository.LogsRepository
 import com.tgs.app.databinding.FragmentHomeBinding
 import com.tgs.app.notif.NotificationHelper
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private var logsRepository: LogsRepository? = null
+    private var isCelsius = true
+    private var currentTempCelsius = 24.2f
+    private lateinit var popupLauncher: ActivityResultLauncher<Intent>
+
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var refreshRunnable: Runnable
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -34,6 +47,16 @@ class HomeFragment : Fragment() {
             // FCM SDK (and your app) can post notifications
         } else {
             // TODO: Inform user that notifications are disabled
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Register before the fragment is started
+        popupLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // Hide gray overlay when popup closes
+            binding.grayOverlay.visibility = View.GONE
         }
     }
 
@@ -49,8 +72,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        logsRepository = LogsRepository(requireContext())
+
         askNotificationPermission()
         getFCMToken()
+        loadTemperatureData()
+
+        observeSensorData()
+        updateTemperatureDisplay()
 
         val db = FirebaseFirestore.getInstance()
         val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -82,17 +111,22 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // Hardcoded example temperature (change to test)
-        val initialTemp = 80f
-        binding.temp.text = "$initialTemp°"  // Set text in TextView
-        binding.tempGauge.setTemperature(initialTemp) // Move indicator
+        refreshRunnable = object : Runnable {
+            override fun run() {
+                observeSensorData() // Fetch new data
+                updateTemperatureDisplay() // Refresh UI
+                handler.postDelayed(this, 5000) // Repeat every 5 seconds
+            }
+        }
+        handler.post(refreshRunnable) // Start the loop
 
         // Listener to update gauge when text changes (manual edit simulation)
         binding.temp.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val temp = s.toString().replace("°", "").toFloatOrNull()
+                val temp = s.toString().toFloatOrNull()
                 if (temp != null) {
-                    binding.tempGauge.setTemperature(initialTemp) // Move indicator dynamically
+                    currentTempCelsius = if (isCelsius) temp else fahrenheitToCelsius(temp)
+                    binding.tempGauge.setTemperature(currentTempCelsius) // Always in Celsius
                 }
             }
 
@@ -100,6 +134,69 @@ class HomeFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        binding.tempCV.setOnClickListener {
+            // Show gray overlay
+            binding.grayOverlay.visibility = View.VISIBLE
+
+            // Launch popup activity
+            val intent = Intent(requireContext(), TempPopupActivity::class.java)
+            popupLauncher.launch(intent)
+        }
+
+        // Celsius Button - Switch to Celsius
+        binding.celsius.setOnClickListener {
+            if (!isCelsius) {
+                isCelsius = true
+                binding.tempUnit.text = "°C"
+                updateTemperatureDisplay()
+            }
+        }
+
+        // Fahrenheit Button - Convert and switch to Fahrenheit
+        binding.fahrenheit.setOnClickListener {
+            if (isCelsius) {
+                isCelsius = false
+                binding.tempUnit.text = "°F"
+                updateTemperatureDisplay()
+            }
+        }
+    }
+
+    private fun loadTemperatureData() {
+        logsRepository?.loadTemperatureData(
+            onSuccess = { temperature ->
+                val temp = temperature.toFloatOrNull() ?: 0.0f
+                currentTempCelsius = temp
+                updateTemperatureDisplay()
+            },
+            onFailure = { error ->
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacks(refreshRunnable)
+    }
+
+    private fun updateTemperatureDisplay() {
+        val displayedTemp = if (isCelsius) currentTempCelsius else celsiusToFahrenheit(currentTempCelsius)
+        binding.temp.text = String.format("%.1f", displayedTemp)
+
+        binding.tempGauge.setTemperature(currentTempCelsius)
+
+        // Force the UI to redraw
+        binding.temp.invalidate()
+        binding.tempGauge.invalidate()
+    }
+
+    private fun celsiusToFahrenheit(celsius: Float): Float {
+        return (celsius * 9 / 5) + 32
+    }
+
+    private fun fahrenheitToCelsius(fahrenheit: Float): Float {
+        return (fahrenheit - 32) * 5 / 9
     }
 
     private fun askNotificationPermission() {
@@ -137,16 +234,22 @@ class HomeFragment : Fragment() {
 
         logsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (logEntry in snapshot.children) {
-                    val temperature = logEntry.child("temperature").getValue(Double::class.java) ?: 0.0
-                    val gasStatus = logEntry.child("gasStatus").getValue(String::class.java) ?: "Normal"
-                    val flameStatus = logEntry.child("flameStatus").getValue(String::class.java) ?: "No Flame"
+                Log.d("Firebase", "Snapshot received: ${snapshot.value}")
 
-                    // Check if hazardous conditions exist
-                    if (temperature > 38.0 || gasStatus == "DANGEROUS" || flameStatus.contains("Detected")) {
-                        sendHazardNotification("Warning!", "Hazard detected! Tap for details.")
-                    }
-                }
+                logsRepository?.loadTemperatureData(
+                    onSuccess = { temperature ->
+                        val temp = temperature.toFloatOrNull() ?: return@loadTemperatureData
+                        if (currentTempCelsius != temp) { // Update only if there's a change
+                            currentTempCelsius = temp
+                            Log.d("Firebase", "Updated temp: $temp")
+
+                            binding.temp.post {
+                                updateTemperatureDisplay()
+                            }
+                        }
+                    },
+                    onFailure = { Log.e("FirebaseError", "Failed to load temperature") }
+                )
             }
 
             override fun onCancelled(error: DatabaseError) {

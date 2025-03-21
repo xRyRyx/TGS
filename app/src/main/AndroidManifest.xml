@@ -16,6 +16,10 @@
         android:theme="@style/Theme.TGS"
         tools:targetApi="31">
         <activity
+            android:name=".ui.main.screens.TempPopupActivity"
+            android:theme="@style/PopupDialogTheme"
+            android:exported="false" />
+        <activity
             android:name=".ui.auth.VerifyEmailActivity"
             android:exported="false" />
         <activity

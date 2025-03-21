@@ -1,4 +1,4 @@
-package com.tgs.app.ui.main.fragments
+package com.tgs.app.ui.main.screens
 
 import android.content.Intent
 import android.os.Bundle

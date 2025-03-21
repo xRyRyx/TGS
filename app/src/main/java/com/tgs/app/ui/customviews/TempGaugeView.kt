@@ -24,8 +24,8 @@ class TempGaugeView(context: Context, attrs: AttributeSet) : View(context, attrs
     private val startAngle = 135f  // Start from lower-left
     private val sweepAngle = 270f  // Sweep across top to lower-right
     private var temperature = 24.2f // Default temperature
-    private var minTemp = 10f       // Adjust as needed
-    private var maxTemp = 100f       // Adjust as needed
+    private var minTemp = -40f       // Adjust as needed
+    private var maxTemp = 125f       // Adjust as needed
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
