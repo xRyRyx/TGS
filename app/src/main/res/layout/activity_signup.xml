@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingVertical="10dp"
-                    android:hint="johndoe@gmail.com"
+                    android:hint="Email"
                     android:inputType="textEmailAddress"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -89,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingVertical="10dp"
-                    android:hint="••••••••"
+                    android:hint="Password"
                     android:inputType="textPassword"/>
 
             </com.google.android.material.textfield.TextInputLayout>
