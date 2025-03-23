@@ -12,6 +12,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tgs.app.ui.main.MainActivity
 import com.tgs.app.databinding.ActivityLoginBinding
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import org.json.JSONObject
+import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -55,6 +59,7 @@ class LoginActivity : AppCompatActivity() {
                 val uid = authResult.user?.uid
                 if (uid != null) {
                     updateFCMToken(uid)
+                    sendUIDToNodeMCU(uid)  // Send the UID and emergency contacts to NodeMCU
                 }
             }
             .addOnFailureListener { exception ->
@@ -88,6 +93,58 @@ class LoginActivity : AppCompatActivity() {
                 .addOnFailureListener { exception ->
                     Log.e("FirebaseDebug", "Failed to update FCM token: ${exception.message}")
                 }
+        }
+    }
+
+    private fun sendUIDToNodeMCU(uid: String) {
+        // Reference to the Firebase Database
+        val database = FirebaseDatabase.getInstance().getReference("users")
+
+        // Fetch emergency contacts from Firebase
+        database.child(uid).child("emergencycontacts").get().addOnSuccessListener { snapshot ->
+            val emergencyContacts = mutableListOf<Map<String, String>>()
+
+            // Iterate over the contacts and collect the name and phone number
+            snapshot.children.forEach { contactSnapshot ->
+                val name = contactSnapshot.child("name").getValue(String::class.java) ?: ""
+                val phoneNumber = contactSnapshot.child("phonenumber").getValue(String::class.java) ?: ""
+                if (name.isNotEmpty() && phoneNumber.isNotEmpty()) {
+                    emergencyContacts.add(mapOf("name" to name, "phonenumber" to phoneNumber))
+                }
+            }
+
+            // Prepare the data to send (both UID and emergency contacts)
+            val data = mapOf(
+                "uid" to uid,
+                "emergencyContacts" to emergencyContacts
+            )
+
+            // Convert the data to a JSON string
+            val jsonData = JSONObject(data).toString()
+
+            // Send the UID and emergency contacts to the NodeMCU
+            val url = "http://192.168.100.18/uid"
+            val client = OkHttpClient()
+
+            val request = Request.Builder()
+                .url(url)
+                .post(RequestBody.create("application/json".toMediaTypeOrNull(), jsonData))
+                .addHeader("Content-Type", "application/json")
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    runOnUiThread {
+                        Toast.makeText(this@LoginActivity, "Failed to connect to device!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    Log.d("FirebaseDebug", "UID and emergency contacts sent successfully!")
+                }
+            })
+        }.addOnFailureListener {
+            Log.e("FirebaseDebug", "Failed to fetch emergency contacts: ${it.message}")
         }
     }
 }
