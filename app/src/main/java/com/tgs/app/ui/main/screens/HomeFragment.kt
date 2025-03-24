@@ -83,17 +83,6 @@ class HomeFragment : Fragment() {
         loadTemperatureData()
         updateTemperatureDisplay()
 
-//        logsRepository?.getLatestSensorData(
-//            onResult = { temp, gasDetected, flame ->
-//                val gasPPM = if (gasDetected) 600 else 0
-//
-//                NotificationHelper.sendHazardNotification(requireContext(), temp, gasPPM, flame)
-//            },
-//            onFailure = { error ->
-//                Log.e("SensorData", "Failed to fetch sensor data: $error")
-//            }
-//        )
-
         val db = FirebaseFirestore.getInstance()
         val userId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -246,11 +235,10 @@ class HomeFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("Firebase", "Snapshot received: ${snapshot.value}")
 
-                // Check for updated temperature and handle dangerous levels
+                // temperature
                 logsRepository?.loadTemperatureData(
                     onSuccess = { temperature ->
                         val temp = temperature.toFloatOrNull() ?: return@loadTemperatureData
-                        // Only update if temp is actually different
                         if (currentTempCelsius != temp) {
                             currentTempCelsius = temp
                             Log.d("Firebase", "Updated temp: $temp")
@@ -258,43 +246,50 @@ class HomeFragment : Fragment() {
                                 updateTemperatureDisplay()
                             }
 
-                            // Check if temp has changed and if it is dangerous
                             if (temp != lastKnownTemp) {
                                 checkForDangerousTemperature(temp)
-                                lastKnownTemp = temp // Update last known temp
+                                lastKnownTemp = temp
                             }
                         }
                     },
                     onFailure = { Log.e("FirebaseError", "Failed to load temperature") }
                 )
 
-                // Check for gas data
+                // humidity
+                logsRepository?.loadHumidityData(
+                    onSuccess = { humidity ->
+                        binding.humidity.post {
+                            updateHumidityDisplay(humidity)
+                        }
+                    },
+                    onFailure = { Log.e("FirebaseError", "Failed to load humidity") }
+                )
+
+                // gas
                 logsRepository?.loadGasData(
                     onSuccess = { isGasDetected ->
                         binding.gasSmokeDetected.post {
                             updateGasDisplay(isGasDetected)
                         }
 
-                        // Check if gas detection has changed and if it is dangerous
                         if (isGasDetected != lastKnownGas) {
                             checkForDangerousGas(isGasDetected)
-                            lastKnownGas = isGasDetected // Update last known gas status
+                            lastKnownGas = isGasDetected
                         }
                     },
                     onFailure = { Log.e("FirebaseError", "Failed to load gas data") }
                 )
 
-                // Check for flame data
+                // flame
                 logsRepository?.loadFlameData(
                     onSuccess = { flameValue ->
                         binding.flameDetected.post {
                             updateFlameDisplay(flameValue)
                         }
 
-                        // Check if flame level has changed and if it is dangerous
                         if (flameValue != lastKnownFlame) {
                             checkForDangerousFlame(flameValue)
-                            lastKnownFlame = flameValue // Update last known flame value
+                            lastKnownFlame = flameValue
                         }
                     },
                     onFailure = { Log.e("FirebaseError", "Failed to load flame data") }
@@ -307,28 +302,24 @@ class HomeFragment : Fragment() {
         })
     }
 
-    // Check for dangerous temperature
     private fun checkForDangerousTemperature(temp: Float) {
-        if (temp > 50) { // Temperature threshold for danger
+        if (temp > 50) {
             NotificationHelper.sendHazardNotification(requireContext(), temp, lastKnownGasInt(), lastKnownFlame)
         }
     }
 
-    // Check for dangerous gas levels
     private fun checkForDangerousGas(isGasDetected: Boolean) {
-        if (isGasDetected) { // Gas detection threshold
+        if (isGasDetected) {
             NotificationHelper.sendHazardNotification(requireContext(), currentTempCelsius, 600, lastKnownFlame)
         }
     }
 
-    // Check for dangerous flame levels
     private fun checkForDangerousFlame(flameValue: Int) {
-        if (flameValue < 60) { // Flame threshold
+        if (flameValue < 60) {
             NotificationHelper.sendHazardNotification(requireContext(), currentTempCelsius, lastKnownGasInt(), flameValue)
         }
     }
 
-    // Helper function to convert boolean gas detection to int
     private fun lastKnownGasInt(): Int {
         return if (lastKnownGas) 600 else 0
     }
