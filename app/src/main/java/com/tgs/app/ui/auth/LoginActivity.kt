@@ -14,6 +14,8 @@ import com.tgs.app.ui.main.MainActivity
 import com.tgs.app.databinding.ActivityLoginBinding
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 
@@ -21,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
+    private val client = OkHttpClient()  // Ensure a single OkHttpClient instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +58,10 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
 
-                // update fcmtoken
                 val uid = authResult.user?.uid
                 if (uid != null) {
                     updateFCMToken(uid)
-                    sendUIDToNodeMCU(uid)  // Send the UID and emergency contacts to NodeMCU
+                    sendUIDToNodeMCU(uid)  // Send UID and emergency contacts
                 }
             }
             .addOnFailureListener { exception ->
@@ -71,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
                     is FirebaseAuthInvalidUserException ->
                         Toast.makeText(this, "User not found", Toast.LENGTH_LONG).show()
                     else ->
-                        Toast.makeText(this, "Login failed. Please check your credentials and try again.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Login failed. Please check your credentials.", Toast.LENGTH_LONG).show()
                 }
             }
     }
@@ -97,50 +99,46 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun sendUIDToNodeMCU(uid: String) {
-        // Reference to the Firebase Database
         val database = FirebaseDatabase.getInstance().getReference("users")
 
-        // Fetch emergency contacts from Firebase
         database.child(uid).child("emergencycontacts").get().addOnSuccessListener { snapshot ->
-            val emergencyContacts = mutableListOf<Map<String, String>>()
+            val emergencyContactsArray = JSONArray()
 
-            // Iterate over the contacts and collect the name and phone number
             snapshot.children.forEach { contactSnapshot ->
                 val name = contactSnapshot.child("name").getValue(String::class.java) ?: ""
                 val phoneNumber = contactSnapshot.child("phonenumber").getValue(String::class.java) ?: ""
                 if (name.isNotEmpty() && phoneNumber.isNotEmpty()) {
-                    emergencyContacts.add(mapOf("name" to name, "phonenumber" to phoneNumber))
+                    val contact = JSONObject().apply {
+                        put("name", name)
+                        put("phonenumber", phoneNumber)
+                    }
+                    emergencyContactsArray.put(contact)
                 }
             }
 
-            // Prepare the data to send (both UID and emergency contacts)
-            val data = mapOf(
-                "uid" to uid,
-                "emergencyContacts" to emergencyContacts
-            )
+            val jsonData = JSONObject().apply {
+                put("uid", uid)
+                put("emergencyContacts", emergencyContactsArray)
+            }.toString()
 
-            // Convert the data to a JSON string
-            val jsonData = JSONObject(data).toString()
+            Log.d("NodeMCU", "Sending JSON: $jsonData")
 
-            // Send the UID and emergency contacts to the NodeMCU
-            val url = "http://192.168.100.18/uid"
-            val client = OkHttpClient()
+            val requestBody = jsonData.toRequestBody("application/json".toMediaTypeOrNull())
 
             val request = Request.Builder()
-                .url(url)
-                .post(RequestBody.create("application/json".toMediaTypeOrNull(), jsonData))
+                .url("http://192.168.100.18/uid")
+                .post(requestBody)
                 .addHeader("Content-Type", "application/json")
                 .build()
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    runOnUiThread {
-                        Toast.makeText(this@LoginActivity, "Failed to connect to device!", Toast.LENGTH_SHORT).show()
-                    }
+                    Log.e("NodeMCU", "Failed to send UID: ${e.message}")
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    Log.d("FirebaseDebug", "UID and emergency contacts sent successfully!")
+                    val responseBody = response.body?.string()
+                    Log.d("NodeMCU", "Response: ${response.code}, Body: $responseBody")
                 }
             })
         }.addOnFailureListener {
