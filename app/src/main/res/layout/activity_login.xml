@@ -78,7 +78,9 @@
             app:cursorColor="@color/green"
             app:boxStrokeColor="@color/green"
             android:layout_marginBottom="20dp"
-            app:hintEnabled="false">
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/gray">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password"
