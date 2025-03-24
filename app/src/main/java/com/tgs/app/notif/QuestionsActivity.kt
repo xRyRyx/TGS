@@ -10,6 +10,7 @@ import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.tgs.app.databinding.ActivityQuestionsBinding
+import com.tgs.app.ui.main.MainActivity
+
 
 class QuestionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQuestionsBinding
@@ -140,7 +143,14 @@ class QuestionsActivity : AppCompatActivity() {
     private fun showEmergencyHotlines() {
         binding.questionText.text = "Fetching emergency hotlines..."
         binding.answerGroup.visibility = View.GONE
-        binding.nextButton.visibility = View.GONE
+
+        binding.nextButton.text = "Go back to the App"
+        binding.nextButton.visibility = View.VISIBLE
+        binding.nextButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         fetchUserLocation()
     }
@@ -164,25 +174,40 @@ class QuestionsActivity : AppCompatActivity() {
         displayedNumbers.clear()
         emergencyNumbers[location]?.let { displayedNumbers.addAll(it) }
 
-        // Show RecyclerView for emergency contacts
-        numbersRecyclerView = RecyclerView(this).apply {
-            layoutManager = LinearLayoutManager(this@QuestionsActivity)
-            numbersAdapter = NumbersAdapter(displayedNumbers) { phoneNumber ->
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:${phoneNumber.replace(Regex("[^0-9]"), "")}")
-                startActivity(intent)
+        if (!::numbersRecyclerView.isInitialized) {
+            numbersRecyclerView = RecyclerView(this).apply {
+                layoutManager = LinearLayoutManager(this@QuestionsActivity)
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    0,
+                    1f
+                ).apply {
+                    setMargins(0, 0, 0, 50)
+                }
+                numbersAdapter = NumbersAdapter(displayedNumbers) { phoneNumber ->
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse("tel:${phoneNumber.replace(Regex("[^0-9]"), "")}")
+                    startActivity(intent)
+                }
+                adapter = numbersAdapter
             }
-            adapter = numbersAdapter
+
+            binding.root.addView(numbersRecyclerView, binding.root.indexOfChild(binding.nextButton))
         }
 
-        binding.root.addView(numbersRecyclerView)
         numbersAdapter.notifyDataSetChanged()
     }
 
     private fun showSafetyTips() {
         binding.questionText.text = "Here are some safety tips:\n\n1. Stay calm\n2. Call for help\n3. Follow safety protocols"
         binding.answerGroup.visibility = View.GONE
-        binding.nextButton.visibility = View.GONE
+
+        binding.nextButton.text = "Go back to the App"
+        binding.nextButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     // Nested Adapter class for displaying phone numbers
@@ -198,12 +223,10 @@ class QuestionsActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: NumberViewHolder, position: Int) {
             val number = numbers[position]
 
-            // Use regex to identify phone numbers and highlight them
             val regex = Regex("\\(?\\d{2,4}\\)?[-.\\s]?\\d{3,4}[-.\\s]?\\d{3,4}")
             val spannableString = SpannableString(number)
 
             regex.findAll(number).forEach { match ->
-                // Set the phone number to blue
                 spannableString.setSpan(
                     ForegroundColorSpan(android.graphics.Color.BLUE),
                     match.range.first,
@@ -211,7 +234,6 @@ class QuestionsActivity : AppCompatActivity() {
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
 
-                // Add underline to the phone number
                 spannableString.setSpan(
                     UnderlineSpan(),
                     match.range.first,
