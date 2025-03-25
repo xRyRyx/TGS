@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tgs.app.ui.main.MainActivity
 import com.tgs.app.databinding.ActivityLoginBinding
+import com.tgs.app.ui.profile.AccountActivity
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -31,6 +32,11 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+
+        binding.forgotPassBtn.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.loginBtn.setOnClickListener {
             val email = binding.email.text.toString().trim()
@@ -69,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
 
                 when (exception) {
                     is FirebaseAuthInvalidCredentialsException ->
-                        Toast.makeText(this, "Incorrect password", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Incorrect email or password", Toast.LENGTH_LONG).show()
                     is FirebaseAuthInvalidUserException ->
                         Toast.makeText(this, "User not found", Toast.LENGTH_LONG).show()
                     else ->

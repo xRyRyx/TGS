@@ -93,14 +93,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/forgotPassBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/quicksand_bold"
             android:text="@string/forgot_pass"
             android:textAlignment="textEnd"
-            android:textColor="@color/green" />
+            android:textColor="@color/light_green_selector" />
 
         <Button
             android:id="@+id/login_btn"
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_up"
-                android:textColor="@color/green"
+                android:textColor="@color/light_green_selector"
                 android:textStyle="bold"/>
         </LinearLayout>
 
