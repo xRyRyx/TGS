@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TGS</string>
+    <string name="app_name">TGS Alert</string>
     <string name="forgot_pass"><u>Forgot password?</u></string>
     <string name="sign_up"><u>Sign up</u></string>
     <string name="login"><u>Login</u></string>
