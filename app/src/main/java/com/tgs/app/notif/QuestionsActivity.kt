@@ -199,7 +199,15 @@ class QuestionsActivity : AppCompatActivity() {
     }
 
     private fun showSafetyTips() {
-        binding.questionText.text = "Here are some safety tips:\n\n1. Stay calm\n2. Call for help\n3. Follow safety protocols"
+        binding.questionText.text = "Fire Safety Tips:\n" +
+                "\n1. Stay calm and assess the situation before taking action." +
+                "\n2. Activate the nearest fire alarm and call emergency services." +
+                "\n3. If the fire is small and manageable, use a fire extinguisher (PASS method: Pull, Aim, Squeeze, Sweep)." +
+                "\n4. Follow evacuation routes and avoid using elevators." +
+                "\n5. If trapped, stay low to avoid smoke inhalation and signal for help." +
+                "\n6. Close doors behind you to slow the spread of fire." +
+                "\n7. Do not re-enter the building until authorities declare it safe."
+
         binding.answerGroup.visibility = View.GONE
 
         binding.nextButton.text = "Go back to the App"

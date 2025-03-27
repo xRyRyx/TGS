@@ -40,7 +40,8 @@ class AccountActivity : AppCompatActivity() {
         loadAccountInfo()
 
         binding.backBtn.setOnClickListener {
-            finish()
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
         }
 
         binding.editBtn.setOnClickListener {
@@ -55,9 +56,9 @@ class AccountActivity : AppCompatActivity() {
 
         userRepository.loadAccountData(
             onSuccess = { name, phoneNumber, email ->
-                binding.fullName.setText(name)
-                binding.phoneNumber.setText(phoneNumber)
-                binding.email.setText(email)
+                editBinding.fullName.setText(name)
+                editBinding.phoneNumber.setText(phoneNumber)
+                editBinding.email.setText(email)
             },
             onFailure = { error ->
                 Toast.makeText(this, error, Toast.LENGTH_SHORT).show()

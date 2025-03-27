@@ -25,7 +25,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var barangayDropdown: AutoCompleteTextView
 
     private val client = OkHttpClient()
-    private val apiKey = "ac4d0de911msha6748bc8a1a39bap184972jsnbe68b249cb40"
+    private val apiKey = "f446c9dcc0msh346372c985bd2bap1582e7jsn0fbfb371f4b1"
 
     private var provinceMap = mutableMapOf<String, String>()
     private var cityMap = mutableMapOf<String, String>()
