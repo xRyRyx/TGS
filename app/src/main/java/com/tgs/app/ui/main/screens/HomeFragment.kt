@@ -303,7 +303,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkForDangerousTemperature(temp: Float) {
-        if (temp > 50) {
+        if (temp >= 50) {
             NotificationHelper.sendHazardNotification(requireContext(), temp, lastKnownGasInt(), lastKnownFlame)
         }
     }

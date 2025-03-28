@@ -15,7 +15,7 @@ object NotificationHelper {
     fun sendHazardNotification(context: Context, temp: Float, gas: Int, flame: Int) {
         val hazardMessages = mutableListOf<String>()
 
-        if (temp > 50) {
+        if (temp >= 50) {
             hazardMessages.add("\uD83C\uDF21\uFE0F Temperature Alert! Unsafe heat levels.")
         }
         if (gas >= 600) {
